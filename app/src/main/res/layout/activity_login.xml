@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/logo"
             android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_marginTop="84dp"
             android:contentDescription="@string/logo"
             android:src="@drawable/logo"
@@ -26,7 +26,7 @@
             android:id="@+id/txtDesc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:text="@string/learn_more"
             android:textAlignment="center"
@@ -155,7 +155,7 @@
             android:paddingBottom="42dp"
             android:text="@string/terms_text"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnSocialLogin" />
