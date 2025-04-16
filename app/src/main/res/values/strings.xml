@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">xoxo</string>
+    <string name="app_name">XOXO</string>
+    <string name="register_text">Don\'t have an account? <font color="#9C9C9C">Register now</font></string>
+    <string name="terms_text">By signing up, you agree with our <font color="#9C9C9C">Terms and Conditions</font></string>
+    <string name="logo">Logo</string>
+    <string name="learn_more">Helping movie lovers stay one step ahead, one showtime at a time</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username">Username</string>
+    <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
+    <string name="forgot_password"><font color="#9C9C9C">Forgot Password?</font></string>
+    <string name="gmail">gmail</string>
+    <string name="facebook">facebook</string>
+    <string name="twitter">twitter</string>
+    <string name="already_have_account">Already have an account? <font color="#9C9C9C">Login now</font></string>
 </resources>
