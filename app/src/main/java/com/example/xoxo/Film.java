@@ -1,4 +1,4 @@
-package com.example.praktik;
+package com.example.xoxo;
 
 import java.io.Serializable;
 
