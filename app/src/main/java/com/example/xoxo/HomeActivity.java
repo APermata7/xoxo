@@ -1,4 +1,4 @@
-package com.example.praktik;
+package com.example.xoxo;
 
 import android.os.Bundle;
 import android.view.View;
