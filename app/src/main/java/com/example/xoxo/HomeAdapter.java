@@ -1,4 +1,4 @@
-package com.example.praktik;
+package com.example.xoxo;
 
 import android.view.LayoutInflater;
 import android.view.View;
