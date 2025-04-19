@@ -67,6 +67,17 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="username"
+                android:textColor="@color/black"
+                android:textSize="23sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp" />
+
+            <TextView
                 android:id="@+id/tvFilm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +85,7 @@
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp" />
 
@@ -124,6 +135,7 @@
             android:id="@+id/home"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:contentDescription="Home"
             android:focusable="true"
@@ -139,6 +151,7 @@
             android:id="@+id/bioskop"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:contentDescription="Bioskop"
             android:focusable="true"
@@ -154,6 +167,7 @@
             android:id="@+id/profile"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:contentDescription="Profile"
             android:focusable="true"
@@ -167,4 +181,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
