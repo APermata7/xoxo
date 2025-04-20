@@ -2,13 +2,14 @@ package com.example.xoxo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText editNamaLengkap, editNoHP;
+    private TextView editNamaLengkap, editNoHP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
