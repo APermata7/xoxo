@@ -22,9 +22,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String username = getIntent().getStringExtra("USERNAME");
         if (username != null)
             binding.etUsername.setText(username);
-        binding.btnLogin.setOnClickListener(this);
-        binding.txtForgotPassword.setOnClickListener(this);
-        binding.txtRegister.setOnClickListener(this);
+            binding.btnLogin.setOnClickListener(this);
+            binding.txtForgotPassword.setOnClickListener(this);
+            binding.txtRegister.setOnClickListener(this);
     }
 
     @Override

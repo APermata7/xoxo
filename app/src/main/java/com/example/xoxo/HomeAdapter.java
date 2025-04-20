@@ -3,31 +3,35 @@ package com.example.xoxo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.xoxo.databinding.ItemFilmBinding;
 import java.util.ArrayList;
 import java.util.List;
+
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder> {
     private List<Film> filmList;
     private boolean isFavoriteList;
-    private OnFavoriteChangeListener listener;
+    private OnFavoriteChangeListener favoriteListener;
+    private OnFilmClickListener filmClickListener;
 
     public interface OnFavoriteChangeListener {
         void onFavoriteChanged(Film film, boolean isFavorite);
     }
 
-    public HomeAdapter(List<Film> filmList, boolean isFavoriteList, OnFavoriteChangeListener listener) {
-        this.filmList = new ArrayList<>(filmList); // Gunakan copy constructor
-        this.isFavoriteList = isFavoriteList;
-        this.listener = listener;
+    public interface OnFilmClickListener {
+        void onFilmClicked(Film film);
     }
 
-    // Tambahkan method untuk update data
+    public HomeAdapter(List<Film> filmList, boolean isFavoriteList,
+                       OnFavoriteChangeListener favoriteListener,
+                       OnFilmClickListener filmClickListener) {
+        this.filmList = new ArrayList<>(filmList);
+        this.isFavoriteList = isFavoriteList;
+        this.favoriteListener = favoriteListener;
+        this.filmClickListener = filmClickListener;
+    }
+
     public void updateFilms(List<Film> newFilms) {
         this.filmList.clear();
         this.filmList.addAll(newFilms);
@@ -37,8 +41,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
     @NonNull
     @Override
     public FilmViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_film, parent, false);
-        return new FilmViewHolder(view);
+        ItemFilmBinding binding = ItemFilmBinding.inflate(
+                LayoutInflater.from(parent.getContext()),
+                parent,
+                false
+        );
+        return new FilmViewHolder(binding);
     }
 
     @Override
@@ -53,46 +61,39 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
     }
 
     class FilmViewHolder extends RecyclerView.ViewHolder {
-        private ImageView filmImage;
-        private Switch switchFavorite;
-        private TextView filmTitle, filmBioskop, filmHarga;
+        private final ItemFilmBinding binding;
 
-        public FilmViewHolder(@NonNull View itemView) {
-            super(itemView);
-            filmImage = itemView.findViewById(R.id.filmImage);
-            switchFavorite = itemView.findViewById(R.id.switch1);
-            filmTitle = itemView.findViewById(R.id.filmTitle);
-            filmBioskop = itemView.findViewById(R.id.filmBioskop);
-            filmHarga = itemView.findViewById(R.id.filmHarga);
+        public FilmViewHolder(ItemFilmBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         public void bind(Film film) {
-            filmImage.setImageResource(film.getImageRes());
-            filmTitle.setText(film.getTitle());
+            binding.filmImage.setImageResource(film.getImageRes());
+            binding.filmTitle.setText(film.getTitle());
+            binding.filmBioskop.setText(film.getBioskop());
+            binding.filmHarga.setText(film.getHarga());
 
             // Atur tampilan berdasarkan jenis list
             if (isFavoriteList) {
-                filmBioskop.setVisibility(View.GONE);
-                filmHarga.setVisibility(View.GONE);
-                switchFavorite.setText("Hapus Favorite");
+                binding.switch1.setText("Hapus Favorite");
             } else {
-                filmBioskop.setVisibility(View.VISIBLE);
-                filmHarga.setVisibility(View.VISIBLE);
-                filmBioskop.setText(film.getBioskop());
-                filmHarga.setText(film.getHarga());
-                switchFavorite.setText("Tambah Favorite");
+                binding.switch1.setText("Favorite");
             }
 
-            switchFavorite.setOnCheckedChangeListener(null); // Reset dulu
-            switchFavorite.setChecked(film.isFavorite());
-            switchFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isFavoriteList && !isChecked) {
-                    // Khusus list favorit, langsung hapus saat switch dimatikan
-                    listener.onFavoriteChanged(film, false);
-                } else if (!isFavoriteList) {
-                    // Untuk list biasa, biarkan normal
-                    film.setFavorite(isChecked);
-                    listener.onFavoriteChanged(film, isChecked);
+            // Set click listener untuk seluruh item
+            itemView.setOnClickListener(v -> {
+                if (filmClickListener != null) {
+                    filmClickListener.onFilmClicked(film);
+                }
+            });
+
+            // Set listener untuk switch favorite
+            binding.switch1.setOnCheckedChangeListener(null); // Reset dulu
+            binding.switch1.setChecked(film.isFavorite());
+            binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (favoriteListener != null) {
+                    favoriteListener.onFavoriteChanged(film, isChecked);
                 }
             });
         }

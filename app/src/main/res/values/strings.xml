@@ -15,4 +15,5 @@
     <string name="facebook">facebook</string>
     <string name="twitter">twitter</string>
     <string name="already_have_account">Already have an account? <font color="#9C9C9C">Login now</font></string>
+    <string name="welcome_message">Hi, %1$s! 👋</string>
 </resources>
