@@ -8,17 +8,17 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 ***
 
 ### Kelompok 1:
-##### Aulia Permata Kumala (235150701111001)
-##### Farhah Mutiara Arifa (235150700111002)
-##### Verda Aulia Setri (235150701111014)
-##### Lovely Ito Panjaitan (235150700111012)
-##### Lidwina Eleonora Dora (235150707111019)
+- Aulia Permata Kumala (235150701111001)
+- Farhah Mutiara Arifa (235150700111002)
+- Verda Aulia Setri (235150701111014)
+- Lovely Ito Panjaitan (235150700111012)
+- Lidwina Eleonora Dora (235150707111019)
 
 ***
 
 ### Pembagian Tugas:
-##### Aulia Permata Kumala: Login dan Register
-##### Lovely Ito Panjaitan: Lokasi Bioskop dan Detail
-##### Farhah Mutiara Arifa: Profile
-##### Lidwina Eleonora Dora: Homepage
-##### Verda Aulia Setri: Detail Film
+- Aulia Permata Kumala: Login dan Register
+- Lovely Ito Panjaitan: Lokasi Bioskop dan Detail
+- Farhah Mutiara Arifa: Profile
+- Lidwina Eleonora Dora: Homepage
+- Verda Aulia Setri: Detail Film
