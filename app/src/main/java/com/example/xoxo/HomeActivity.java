@@ -3,6 +3,7 @@ package com.example.xoxo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -104,8 +105,12 @@ public class HomeActivity extends AppCompatActivity implements HomeAdapter.OnFav
             Toast.makeText(this, "Anda sudah di home.", Toast.LENGTH_SHORT).show();
         else if (id == R.id.bioskop)
             Toast.makeText(this, "Halaman belum ada", Toast.LENGTH_SHORT).show();
-        else if (id == R.id.profile || id == R.id.ivProfile)
-            Toast.makeText(this, "Halaman belum ada", Toast.LENGTH_SHORT).show();
+        else if (id == R.id.profile || id == R.id.ivProfile) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("USERNAME", getIntent().getStringExtra("USERNAME"));
+            intent.putExtra("EMAIL", getIntent().getStringExtra("EMAIL"));
+            startActivity(intent);
+        }
         else if (id == R.id.filmImage || id == R.id.filmTitle || id == R.id.filmBioskop || id == R.id.filmHarga)
             Toast.makeText(this, "Halaman belum ada", Toast.LENGTH_SHORT).show();
     }

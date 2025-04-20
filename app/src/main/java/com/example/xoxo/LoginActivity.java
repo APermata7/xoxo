@@ -22,7 +22,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String username = getIntent().getStringExtra("USERNAME");
         if (username != null)
             binding.etUsername.setText(username);
-
         binding.btnLogin.setOnClickListener(this);
         binding.txtForgotPassword.setOnClickListener(this);
         binding.txtRegister.setOnClickListener(this);
@@ -47,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = binding.etPassword.getText().toString().trim();
         String validUsername = getIntent().getStringExtra("USERNAME");
         String validPassword = getIntent().getStringExtra("PASSWORD");
+        String email = getIntent().getStringExtra("EMAIL");
 
         if (username.isEmpty() || password.isEmpty())
             Toast.makeText(this, "Email dan Password tidak boleh kosong!", Toast.LENGTH_SHORT).show();
@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(this, "Login Berhasil!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
                 startActivity(intent);
                 finish();
             } else
