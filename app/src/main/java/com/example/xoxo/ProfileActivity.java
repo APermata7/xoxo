@@ -4,34 +4,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView editNamaLengkap, editNoHP;
+    private TextView textUsername, textEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Initialize EditTexts
-        editNamaLengkap = findViewById(R.id.editNamaLengkap);
-        editNoHP = findViewById(R.id.editEmail);
+        // Inisialisasi TextViews
+        textUsername = findViewById(R.id.username);
+        textEmail = findViewById(R.id.email);
 
-        ImageView backButton = findViewById(R.id.imageView);
-        // Get data from Intent
+        // Ambil data dari Intent
         Intent intent = getIntent();
         String username = intent.getStringExtra("USERNAME");
         String email = intent.getStringExtra("EMAIL");
 
-        // Set data to UI elements
-        editNamaLengkap.setText(username); // or another data field if needed
-        editNoHP.setText(email);  // or set other user details as needed
+        // Masukkan ke UI jika datanya ada
+        if (username != null) textUsername.setText(username);
+        if (email != null) textEmail.setText(email);
 
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        // Tombol kembali
+        ImageView backButton = findViewById(R.id.imageView);
+        backButton.setOnClickListener(v -> finish());
     }
 }
