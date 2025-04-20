@@ -23,30 +23,31 @@ public class HomeActivity extends AppCompatActivity implements
     private List<Film> allFilms = new ArrayList<>();
     private List<Film> favoriteFilms = new ArrayList<>();
 
+    private String username;
+    private String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Inisialisasi view menggunakan binding
         initializeViews();
         setupClickListeners();
         setupRecyclerViews();
         loadDummyData();
 
-        // Restore state jika ada
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
 
-        String username = getIntent().getStringExtra("USERNAME");
+        username = getIntent().getStringExtra("USERNAME");
+        email = getIntent().getStringExtra("EMAIL");
         String welcomeMessage = getString(R.string.welcome_message, username);
         binding.tvUsername.setText(welcomeMessage);
     }
 
     private void initializeViews() {
-        // Tidak perlu findViewById karena menggunakan ViewBinding
         binding.rvFilm.setLayoutManager(new LinearLayoutManager(this));
         binding.rvFavorite.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -77,14 +78,12 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        // Restore favorite films
         List<Film> savedFavorites = (ArrayList<Film>) savedInstanceState.getSerializable("favorite_films");
         if (savedFavorites != null) {
             favoriteFilms.clear();
             favoriteFilms.addAll(savedFavorites);
         }
 
-        // Restore favorite status for all films
         for (Film film : allFilms) {
             boolean isFavorite = savedInstanceState.getBoolean("film_" + film.getId(), false);
             film.setFavorite(isFavorite);
@@ -128,9 +127,13 @@ public class HomeActivity extends AppCompatActivity implements
         if (id == R.id.home) {
             Toast.makeText(this, "Anda sudah di home.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.bioskop) {
-            Toast.makeText(this, "Halaman belum ada", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, BioskopActivity.class);
+            startActivity(intent);
         } else if (id == R.id.profile || id == R.id.ivProfile) {
-            Toast.makeText(this, "Halaman belum ada", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("USERNAME", username);
+            intent.putExtra("EMAIL", email);
+            startActivity(intent);
         }
     }
 

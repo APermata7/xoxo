@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String username = binding.etUsername.getText().toString().trim();
         String password = binding.etPassword.getText().toString().trim();
         String validUsername = getIntent().getStringExtra("USERNAME");
+        String validEmail = getIntent().getStringExtra("EMAIL");
         String validPassword = getIntent().getStringExtra("PASSWORD");
 
         if (username.isEmpty() || password.isEmpty())
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(this, "Login Berhasil!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", validEmail);
                 startActivity(intent);
                 finish();
             } else
