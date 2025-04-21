@@ -69,10 +69,10 @@ public class HomeActivity extends AppCompatActivity implements
 
     private void loadDummyData() {
         allFilms.clear();
-        allFilms.add(new Film(1, "The Girl From the Other Side", "CINEPOLIS MATOS", "Rp100.000", R.drawable.film1));
-        allFilms.add(new Film(2, "Kiki's Delivery Service", "CGV CINEMAS", "Rp120.000", R.drawable.film2));
-        allFilms.add(new Film(3, "My Neighbor Totoro", "XXI THEATER", "Rp110.000", R.drawable.film3));
-        allFilms.add(new Film(4, "Spirited Away", "XXI TRANSMART", "Rp130.000", R.drawable.film4));
+        allFilms.add(new Film(1, "The Girl From the Other Side", "CINEPOLIS MATOS", "Rp100.000", R.drawable.film1, "The Girl from the Other Side: Siúil, a Rún is a Japanese manga series written and illustrated by Nagabe. It was serialized in Mag Garden's shōnen manga magazine Monthly Comic Garden from September 2015 to March 2021, with its chapters collected into eleven tankōbon volumes.", "Drama/Animation | 2019 | 10 minutes", "Teacher & Shiva", "Yutaro Kubo, Satomi Maiya"));
+        allFilms.add(new Film(2, "Kiki's Delivery Service", "CGV CINEMAS", "Rp120.000", R.drawable.film2, "Thirteen-year-old Kiki tries to become an independent witch and gets a job at a delivery service. She wakes up one day to find that she can neither fly her broom nor talk to her cat.", "Family/Fantasy | 1989 | 1 hour 42 minutes", "Kiki", "Hayao Miyazaki"));
+        allFilms.add(new Film(3, "My Neighbor Totoro", "XXI THEATER", "Rp110.000", R.drawable.film3, "Two sisters relocate to rural Japan with their father to spend time with their ill mother. They face a mythical forest sprite and its woodland friends with whom they have many magical adventures.", "Fantasy/Adventure | 1988 | 1 hour 26 minutes", "Totoro", "Hayao Miyazaki"));
+        allFilms.add(new Film(4, "Spirited Away", "XXI TRANSMART", "Rp130.000", R.drawable.film4, "Ten-year-old Chihiro and her parents end up at an abandoned amusement park inhabited by supernatural beings. Soon, she learns that she must work to free her parents who have been turned into pigs.", "Fantasy/Adventure | 2001 | 2 hours 5 minutes", "Chihiro", "Hayao Miyazaki"));
 
         filmAdapter.updateFilms(allFilms);
     }
@@ -112,14 +112,14 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onFilmClicked(Film film) {
-        // Intent ke detail film
-//        Intent intent = new Intent(this, FilmDetailActivity.class);
-//        intent.putExtra("film_id", film.getId());
-//        intent.putExtra("film_title", film.getTitle());
-//        intent.putExtra("film_bioskop", film.getBioskop());
-//        intent.putExtra("film_harga", film.getHarga());
-//        intent.putExtra("film_image", film.getImageRes());
-//        startActivity(intent);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("film_title", film.getTitle());
+        intent.putExtra("film_image", film.getImageRes());
+        intent.putExtra("film_desc", film.getDesc());
+        intent.putExtra("film_info", film.getInfo());
+        intent.putExtra("film_pemain", film.getPemain());
+        intent.putExtra("film_sutradara", film.getSutradara());
+        startActivity(intent);
     }
 
     private void handleClick(View view) {
@@ -128,12 +128,16 @@ public class HomeActivity extends AppCompatActivity implements
             Toast.makeText(this, "Anda sudah di home.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.bioskop) {
             Intent intent = new Intent(this, BioskopActivity.class);
+            intent.putExtra("USERNAME", username);
+            intent.putExtra("EMAIL", email);
             startActivity(intent);
+            overridePendingTransition(0, 0);
         } else if (id == R.id.profile || id == R.id.ivProfile) {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra("USERNAME", username);
             intent.putExtra("EMAIL", email);
             startActivity(intent);
+            overridePendingTransition(0, 0);
         }
     }
 
