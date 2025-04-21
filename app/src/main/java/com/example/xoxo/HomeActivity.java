@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     private void initializeViews() {
-        binding.rvFilm.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvFilm.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.rvFavorite.setLayoutManager(new LinearLayoutManager(this));
     }
 
