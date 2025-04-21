@@ -20,7 +20,7 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 ***
 
 ### ✨ Fitur
-#### 🔐 Login:
+#### 🔐 Login dan Register:
 - 🔑 Login: Masukkan username dan password, lalu tekan "Login".
 - 📝 Daftar: Belum punya akun? Klik untuk registrasi.
 - ✅ Validasi dengan memeriksa username, email, password, dan konfirmasi.
