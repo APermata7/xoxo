@@ -24,6 +24,10 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 - ❤️ Tambah / hapus favorit film.
 - 🔄 Dua RecyclerView: Daftar *Film* dan *Favorit*.
 
+### 🎬 Detail Film:
+- 📄 Tampilkan detail lengkap film (judul, informasi umum (genre, tahun rilis, durasi/episode), deskripsi film, nama pemain utama, nama sutradara, poster film).
+- ❤️ Favorite, bookmark, share.
+
 ####   🍿 Bioskop :
 - 🔻 Spinner untuk memilih kota.
 - 🎥 Tampilkan nama bioskop yang ada di beberapa kota.
@@ -32,6 +36,6 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 - 📌 Tampilan detail dari bioskop yang dipilih (lokasi dan nomor telp).
 
 ####   👤 Profile:
-- 🙍‍♂️ Tampilkan informasi pengguna (username, email)
-- ⚙️ Menu pengaturan akun
-- 🎞️ Menu film favorit saya
+- 🙍‍♂️ Tampilkan informasi pengguna (username, email).
+- ⚙️ Menu pengaturan akun.
+- 🎞️ Menu film favorit saya.
