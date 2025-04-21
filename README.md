@@ -19,6 +19,13 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 ***
 
 ### ✨ Fitur
+#### 🔐 Login:
+- 🔑 Login: Masukkan username dan password, lalu tekan "Login".
+- 📝 Daftar: Belum punya akun? Klik untuk registrasi.
+- ✅ Validasi dengan memeriksa username, email, password, dan konfirmasi.
+- 🚪 Berhasil Login akan diarahkan ke halaman utama setelah login sukses.
+- ⚠️ Pesan Error jika ada kesalahan input.
+
 ####    🏠 Homepage:
 - 🎬 Tampilkan film (poster, judul, bioskop, harga).
 - ❤️ Tambah / hapus favorit film.
