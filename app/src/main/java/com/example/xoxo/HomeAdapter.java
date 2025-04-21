@@ -66,6 +66,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
         public FilmViewHolder(ItemFilmBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && filmClickListener != null) {
+                    filmClickListener.onFilmClicked(filmList.get(position));
+                }
+            });
         }
 
         public void bind(Film film) {
