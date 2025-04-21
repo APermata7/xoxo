@@ -24,7 +24,7 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 - ❤️ Tambah / hapus favorit film.
 - 🔄 Dua RecyclerView: Daftar *Film* dan *Favorit*.
 
-### 🎬 Detail Film:
+#### 🎬 Detail Film:
 - 📄 Tampilkan detail lengkap film (judul, informasi umum (genre, tahun rilis, durasi/episode), deskripsi film, nama pemain utama, nama sutradara, poster film).
 - ❤️ Favorite, bookmark, share.
 
