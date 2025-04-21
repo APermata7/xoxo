@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,21 +25,16 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
 
     private static Map<String, List<Bioskop>> bioskopPerKota = new HashMap<>();
     private String currentCity;
+    private String username;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bioskop);
 
-        ImageView headerProfileIcon = findViewById(R.id.bioskop_profile);
-        headerProfileIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent profileIntent = new Intent(BioskopActivity.this, ProfileActivity.class);
-                startActivity(profileIntent);
-                overridePendingTransition(0, 0);
-            }
-        });
+        username = getIntent().getStringExtra("USERNAME");
+        email = getIntent().getStringExtra("EMAIL");
 
         spinnerCity = findViewById(R.id.spinnerCity);
         recyclerView = findViewById(R.id.recyclerViewBioskop);
@@ -119,14 +113,17 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
         int id = view.getId();
 
         if (id == R.id.home) {
-            Intent intent = new Intent(BioskopActivity.this, HomeActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("USERNAME", username);
+            intent.putExtra("EMAIL", email);
             startActivity(intent);
             overridePendingTransition(0, 0);
-            finish();
         } else if (id == R.id.bioskop) {
             Toast.makeText(this, "Kamu sedang di halaman Bioskop", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.profile || id == R.id.bioskop_profile) {
-            Intent intent = new Intent(BioskopActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("USERNAME", username);
+            intent.putExtra("EMAIL", email);
             startActivity(intent);
             overridePendingTransition(0, 0);
         }
