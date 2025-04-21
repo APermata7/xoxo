@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="70dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/navbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,19 +20,36 @@
             android:orientation="vertical">
 
             <!-- Header -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="vertical"
-                android:background="@color/grey"
-                android:gravity="center">
+                android:layout_height="wrap_content"
+                android:padding="18dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/logo"
-                    app:tint="@android:color/white" />
-            </LinearLayout>
+                    android:id="@+id/btnBack"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvDetail"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvDetail"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/tvDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Detail Film"
+                    app:layout_constraintStart_toEndOf="@+id/btnBack"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Komponen lainnya (judul, poster, deskripsi, dll) -->
             <!-- PASTE semua komponen yang kamu sudah buat sebelumnya di sini -->
@@ -47,17 +63,17 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:gravity="center"
-                android:layoutMarginTop="30dp"/>
+                android:layout_marginTop="30dp"/>
 
             <!-- Poster -->
             <ImageView
                 android:id="@+id/imagePoster"
-                android:layout_width="300dp"
+                android:layout_width="350dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_white"
-                android:scaleType="fitXY"/>
+                android:background="@drawable/film1"
+                android:scaleType="fitXY" />
 
             <!-- Info singkat -->
             <TextView
@@ -135,65 +151,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/navbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- Gambar Home -->
-        <ImageView
-            android:id="@+id/home"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:contentDescription="Home"
-            android:focusable="true"
-            android:onClick="onClick"
-            android:src="@drawable/ic_home"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bioskop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Gambar Bioskop -->
-        <ImageView
-            android:id="@+id/bioskop"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:contentDescription="Bioskop"
-            android:focusable="true"
-            android:onClick="onClick"
-            android:src="@drawable/ic_bioskop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/home"
-            app:layout_constraintEnd_toStartOf="@+id/profile"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Gambar Profile -->
-        <ImageView
-            android:id="@+id/profile"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:contentDescription="Profile"
-            android:focusable="true"
-            android:onClick="onClick"
-            android:src="@drawable/ic_profil"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/bioskop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
