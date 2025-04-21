@@ -22,5 +22,5 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 ####    🏠 Homepage:
 - 🎬 Tampilkan film (poster, judul, bioskop, harga).
 - ❤️ Tambah / hapus favorit film.
-- 🔄 Dua RecyclerView: *Semua Film* dan *Favorit*.
+- 🔄 Dua RecyclerView: Daftar *Film* dan *Favorit*.
 
