@@ -8,36 +8,45 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ProfileActivity extends AppCompatActivity {
+import com.example.xoxo.databinding.ActivityLoginBinding;
+import com.example.xoxo.databinding.ActivityProfileBinding;
+import com.example.xoxo.databinding.ActivityRegisterBinding;
 
-    private TextView textUsername, textEmail;
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+    private String username, email;
+    private ActivityProfileBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        binding = ActivityProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        textUsername = findViewById(R.id.username);
-        textEmail = findViewById(R.id.email);
+        username = getIntent().getStringExtra("USERNAME");
+        email = getIntent().getStringExtra("EMAIL");
 
-        Intent intent = getIntent();
-        String username = intent.getStringExtra("USERNAME");
-        String email = intent.getStringExtra("EMAIL");
-
-        if (username != null) textUsername.setText(username);
-        if (email != null) textEmail.setText(email);
+        if (username != null)
+            binding.tvUsername.setText(username);
+        if (username != null)
+            binding.tvEmail.setText(email);
     }
 
-    public void handleClick(View view) {
+    public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.home) {
-            Toast.makeText(this, "Anda sudah di home.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("USERNAME", username);
+            intent.putExtra("EMAIL", email);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
         } else if (id == R.id.bioskop) {
             Intent intent = new Intent(this, BioskopActivity.class);
+            intent.putExtra("USERNAME", username);
+            intent.putExtra("EMAIL", email);
             startActivity(intent);
+            overridePendingTransition(0, 0);
         } else if (id == R.id.profile) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
+            Toast.makeText(this, "Anda sudah di profile.", Toast.LENGTH_SHORT).show();
         }
     }
 }
