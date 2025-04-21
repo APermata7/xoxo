@@ -1,4 +1,5 @@
-# 🎬 XOXO - List Film & Bioskop - Helping movie lovers explore films and cinemas with ease
+# 🎬 XOXO - List Film & Bioskop
+Helping movie lovers explore films and cinemas with ease
 
 ***
 
