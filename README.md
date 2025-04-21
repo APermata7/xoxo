@@ -25,9 +25,13 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 - 🔄 Dua RecyclerView: Daftar *Film* dan *Favorit*.
 
 ####   🍿 Bioskop :
-- 🔻 Spinner untuk memilih kota
-- 🎥 Tampilkan nama bioskop yang ada di beberapa kota
-- ⭐ Ikon favorit yang clickable dan terhubung dengan Bioskop Detail
-- 🔄 RecylerView : Semua nama bioskop yang ada pada kota pilihan
-- 📌 Tampilan detail dari bioskop yang dipilih (lokasi dan nomor telp)
+- 🔻 Spinner untuk memilih kota.
+- 🎥 Tampilkan nama bioskop yang ada di beberapa kota.
+- ⭐ Ikon favorit yang clickable dan terhubung dengan Bioskop Detail.
+- 🔄 RecylerView : Semua nama bioskop yang ada pada kota pilihan.
+- 📌 Tampilan detail dari bioskop yang dipilih (lokasi dan nomor telp).
 
+####   👤 Profile:
+- 🙍‍♂️ Tampilkan informasi pengguna (username, email)
+- ⚙️ Menu pengaturan akun
+- 🎞️ Menu film favorit saya
