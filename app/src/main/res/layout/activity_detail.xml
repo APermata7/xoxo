@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollableContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="70dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/navbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="vertical"
+                android:background="@color/grey"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/logo"
+                    app:tint="@android:color/white" />
+            </LinearLayout>
+
+            <!-- Komponen lainnya (judul, poster, deskripsi, dll) -->
+            <!-- PASTE semua komponen yang kamu sudah buat sebelumnya di sini -->
+            <!-- Judul Film -->
+            <TextView
+                android:id="@+id/textJudul"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="JUDUL FILM"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layoutMarginTop="30dp"/>
+
+            <!-- Poster -->
+            <ImageView
+                android:id="@+id/imagePoster"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_white"
+                android:scaleType="fitXY"/>
+
+            <!-- Info singkat -->
+            <TextView
+                android:id="@+id/textInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Genre | Tahun Rilis | Jumlah Episode / Durasi"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"/>
+
+            <!-- Deskripsi -->
+            <TextView
+                android:id="@+id/textDeskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis et lacus leo. Donec laoreet ante ut fermentum iaculis. Integer fringilla, dui eget convallis placerat, nulla urna commodo mi, in efficitur sapien mi at est. Curabitur molestie elit vitae urna ultricies iaculis. Nunc non massa efficitur, viverra ligula a, mollis ex. "/>
+
+
+            <!-- Pemain dan Sutradara -->
+            <TextView
+                android:id="@+id/textPemain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pemain:"
+                android:textColor="@android:color/white"
+                android:paddingStart="16dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/textSutradara"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sutradara:"
+                android:textColor="@android:color/white"
+                android:paddingStart="16dp"
+                android:textStyle="bold"/>
+
+            <!-- Ikon favorite, bookmark, share -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:padding="16dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnFav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_favorite"
+                    android:background="@android:color/transparent"
+                    app:tint="@android:color/white" />
+
+                <ImageButton
+                    android:id="@+id/btnBookmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_bookmark"
+                    android:background="@android:color/transparent"
+                    app:tint="@android:color/white" />
+
+                <ImageButton
+                    android:id="@+id/btnShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_share"
+                    android:background="@android:color/transparent"
+                    app:tint="@android:color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Gambar Home -->
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:contentDescription="Home"
+            android:focusable="true"
+            android:onClick="onClick"
+            android:src="@drawable/ic_home"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bioskop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Gambar Bioskop -->
+        <ImageView
+            android:id="@+id/bioskop"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:contentDescription="Bioskop"
+            android:focusable="true"
+            android:onClick="onClick"
+            android:src="@drawable/ic_bioskop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/home"
+            app:layout_constraintEnd_toStartOf="@+id/profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Gambar Profile -->
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:contentDescription="Profile"
+            android:focusable="true"
+            android:onClick="onClick"
+            android:src="@drawable/ic_profil"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bioskop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
