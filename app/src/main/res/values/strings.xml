@@ -16,4 +16,5 @@
     <string name="twitter">twitter</string>
     <string name="already_have_account">Already have an account? <font color="#9C9C9C">Login now</font></string>
     <string name="welcome_message">Hi, %1$s! 👋</string>
+    <string name="default_web_client_id">779644763730-annf99vefdfreatedbh60q4hddffl0l1.apps.googleusercontent.com</string>
 </resources>

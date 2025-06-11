@@ -12,6 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,39 +27,43 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
     private Spinner spinnerCity;
     private RecyclerView recyclerView;
     private BioskopAdapter adapter;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
-    private static Map<String, List<Bioskop>> bioskopPerKota = new HashMap<>();
+    private Map<String, List<Bioskop>> bioskopPerKota = new HashMap<>();
     private String currentCity;
     private String username;
     private String email;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bioskop);
 
+        // Inisialisasi Firestore dan Auth
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
         username = getIntent().getStringExtra("USERNAME");
         email = getIntent().getStringExtra("EMAIL");
+        userId = mAuth.getCurrentUser().getUid();
 
         spinnerCity = findViewById(R.id.spinnerCity);
         recyclerView = findViewById(R.id.recyclerViewBioskop);
 
-        if (bioskopPerKota.isEmpty()) {
-            initializeData();
-        }
-
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>(bioskopPerKota.keySet()));
-        spinnerCity.setAdapter(cityAdapter);
-
+        // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Load data bioskop dari Firestore
+        loadCinemasFromFirestore();
+
+        // Set up spinner
         spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentCity = parent.getItemAtPosition(position).toString();
-                List<Bioskop> bioskops = bioskopPerKota.get(currentCity);
-                adapter = new BioskopAdapter(bioskops, BioskopActivity.this);
-                recyclerView.setAdapter(adapter);
+                updateCinemaList(currentCity);
             }
 
             @Override
@@ -62,51 +71,99 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (currentCity != null) {
-            List<Bioskop> bioskops = bioskopPerKota.get(currentCity);
+    private void loadCinemasFromFirestore() {
+        // Ambil data bioskop dari Firestore
+        db.collection("cinemas")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        bioskopPerKota.clear();
+
+                        // Ambil juga data favorit pengguna
+                        db.collection("users").document(userId).collection("favorites")
+                                .get()
+                                .addOnCompleteListener(favTask -> {
+                                    Map<String, Boolean> favoritesMap = new HashMap<>();
+                                    if (favTask.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : favTask.getResult()) {
+                                            favoritesMap.put(document.getId(), true);
+                                        }
+                                    }
+
+                                    // Proses data bioskop
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Bioskop bioskop = document.toObject(Bioskop.class);
+                                        bioskop.setId(document.getId());
+
+                                        // Set status favorit jika ada di koleksi favorit pengguna
+                                        if (favoritesMap.containsKey(bioskop.getId())) {
+                                            bioskop.setFavorite(true);
+                                        }
+
+                                        String city = bioskop.getCity();
+                                        if (!bioskopPerKota.containsKey(city)) {
+                                            bioskopPerKota.put(city, new ArrayList<>());
+                                        }
+                                        bioskopPerKota.get(city).add(bioskop);
+                                    }
+
+                                    // Update spinner dengan kota yang tersedia
+                                    updateCitySpinner();
+                                });
+                    } else {
+                        Toast.makeText(this, "Gagal memuat data bioskop", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateCitySpinner() {
+        List<String> cities = new ArrayList<>(bioskopPerKota.keySet());
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, cities);
+        spinnerCity.setAdapter(cityAdapter);
+
+        if (currentCity != null && cities.contains(currentCity)) {
+            int position = cities.indexOf(currentCity);
+            spinnerCity.setSelection(position);
+        }
+    }
+
+    private void updateCinemaList(String city) {
+        if (bioskopPerKota.containsKey(city)) {
+            List<Bioskop> bioskops = bioskopPerKota.get(city);
             adapter = new BioskopAdapter(bioskops, this);
             recyclerView.setAdapter(adapter);
         }
     }
 
-    private void initializeData() {
-        List<Bioskop> malangCinemas = new ArrayList<>();
-        malangCinemas.add(new Bioskop("Araya XXI", false, "Jalan Blimbing Indah Megah no. 2, Araya Mall, Lantai 3", "0812-3456-7890"));
-        malangCinemas.add(new Bioskop("Dieng", false, "Jalan Dieng no. 15, Dieng Plaza, Lantai 1", "0811-2345-6789"));
-        malangCinemas.add(new Bioskop("Lippo Plaza Batu Cinepolis", false, "Jalan Diponegoro no. 78, Lippo Plaza Batu, Lantai 2", "0813-4567-8901"));
-        malangCinemas.add(new Bioskop("Malang City Point CGV", false, "Jalan Tenes no. 12, Malang City Point, Lantai 4", "0814-5678-9012"));
-        malangCinemas.add(new Bioskop("Malang Town Square Cinepolis", false, "Jalan Veteran no. 8, Malang Town Square, Lantai Upper Ground, Unit UG-03", "0815-6789-0123"));
-        malangCinemas.add(new Bioskop("Transmart Mx Mall XXI", false, "Jalan Veteran no. 15, Transmart Mx Mall, Lantai 3", "0817-8901-2345"));
-        malangCinemas.add(new Bioskop("Mandala", false, "Jalan Mandala no. 9, Daerah Mandala, Lantai 2", "0817-8901-2222"));
-        bioskopPerKota.put("Malang", malangCinemas);
-
-        List<Bioskop> surabayaCinemas = new ArrayList<>();
-        surabayaCinemas.add(new Bioskop("Tunjungan Plaza XXI", false, "Jalan Basuki Rahmat no. 8-12, Tunjungan Plaza, Lantai 4", "0818-9012-3456"));
-        surabayaCinemas.add(new Bioskop("Pakuwon Mall CGV", false, "Jalan Puncak Indah Lontar no. 2, Pakuwon Mall, Lantai 3", "0819-0123-4567"));
-        surabayaCinemas.add(new Bioskop("Galaxy Mall Cinepolis", false, "Jalan Dharmahusada Indah Timur no. 35-37, Galaxy Mall, Lantai 2", "0820-1234-5678"));
-        bioskopPerKota.put("Surabaya", surabayaCinemas);
-
-        List<Bioskop> blitarCinemas = new ArrayList<>();
-        blitarCinemas.add(new Bioskop("Blitar Square XXI", false, "Jalan Merdeka no. 39, Blitar Square, Lantai 2", "0821-2345-6789"));
-        bioskopPerKota.put("Blitar", blitarCinemas);
-    }
-
     @Override
     public void onFavoriteChanged(Bioskop bioskop, boolean isFavorite) {
-    }
-
-    public static Bioskop getBioskopByName(String name) {
-        for (List<Bioskop> cinemaList : bioskopPerKota.values()) {
-            for (Bioskop bioskop : cinemaList) {
-                if (bioskop.getNama().equals(name)) {
-                    return bioskop;
-                }
-            }
+        // Update status favorit di Firestore
+        if (isFavorite) {
+            // Tambahkan ke favorit
+            db.collection("users").document(userId).collection("favorites")
+                    .document(bioskop.getId())
+                    .set(new HashMap<String, Object>())
+                    .addOnSuccessListener(aVoid -> {
+                        bioskop.setFavorite(true);
+                        adapter.notifyDataSetChanged();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Gagal menyimpan favorit", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            // Hapus dari favorit
+            db.collection("users").document(userId).collection("favorites")
+                    .document(bioskop.getId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        bioskop.setFavorite(false);
+                        adapter.notifyDataSetChanged();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Gagal menghapus favorit", Toast.LENGTH_SHORT).show();
+                    });
         }
-        return null;
     }
 
     public void onClick(View view) {

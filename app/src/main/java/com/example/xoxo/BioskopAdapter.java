@@ -41,24 +41,21 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
         Bioskop bioskop = bioskopList.get(position);
         holder.nama.setText(bioskop.getNama());
 
-        // Set the correct star icon based on favorite status
         updateFavoriteIcon(holder.favorite, bioskop.isFavorite());
 
-        // Handle favorite button click
         holder.favorite.setOnClickListener(v -> {
-            bioskop.setFavorite(!bioskop.isFavorite());
-            updateFavoriteIcon(holder.favorite, bioskop.isFavorite());
-
-            // Notify listener
+            boolean newFavoriteStatus = !bioskop.isFavorite();
             if (favoriteListener != null) {
-                favoriteListener.onFavoriteChanged(bioskop, bioskop.isFavorite());
+                favoriteListener.onFavoriteChanged(bioskop, newFavoriteStatus);
             }
         });
 
-        // Handle item click to navigate to detail screen
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, BioskopDetailActivity.class);
+            intent.putExtra("CINEMA_ID", bioskop.getId());
             intent.putExtra("CINEMA_NAME", bioskop.getNama());
+            intent.putExtra("CINEMA_ADDRESS", bioskop.getAddress());
+            intent.putExtra("CINEMA_INFO", bioskop.getInfo());
             intent.putExtra("IS_FAVORITE", bioskop.isFavorite());
             context.startActivity(intent);
         });
@@ -72,6 +69,11 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
     @Override
     public int getItemCount() {
         return bioskopList.size();
+    }
+
+    public void updateData(List<Bioskop> newBioskopList) {
+        bioskopList = newBioskopList;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
