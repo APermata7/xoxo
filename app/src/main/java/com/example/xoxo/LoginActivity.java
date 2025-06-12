@@ -32,6 +32,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth = FirebaseAuth.getInstance();
 
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        }
+
         setupGoogleSignIn();
         setupListeners();
     }
@@ -81,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleLogin() {
-        String email = binding.etUsername.getText().toString().trim();
+        String email = binding.etEmail.getText().toString().trim();
         String password = binding.etPassword.getText().toString().trim();
 
         if (!isValidEmail(email)) {

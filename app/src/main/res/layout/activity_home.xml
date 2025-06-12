@@ -1,118 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ScrollView
-        android:id="@+id/scrollView2"
-        android:background="@color/white"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/navbar"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/headerCard"
+            <!-- Header with logo and profile -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:cardElevation="0dp"
-                app:layout_constraintTop_toTopOf="parent">
+                android:background="@color/primary"
+                android:padding="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/third"
-                    android:paddingBottom="20dp">
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/logo"
+                    android:contentDescription="App logo" />
 
-                    <ImageView
-                        android:id="@+id/ivLogo"
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="40dp"
-                        android:contentDescription="Home"
-                        android:src="@drawable/logo"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
 
-                    <ImageView
-                        android:id="@+id/ivProfile"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginEnd="30dp"
-                        android:clickable="true"
-                        android:contentDescription="Profile"
-                        android:focusable="true"
-                        android:onClick="onClick"
-                        android:src="@drawable/ic_profile"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/ivLogo"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_profile"
+                    android:contentDescription="Profile"
+                    android:clickable="true" />
+            </LinearLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
+            <!-- Welcome message -->
             <TextView
                 android:id="@+id/tvUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="username"
                 android:textColor="@color/black"
-                android:textSize="23sp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp" />
+                android:textSize="20sp"
+                android:layout_margin="16dp"
+                tools:text="Welcome, User!" />
 
+            <!-- Films section -->
             <TextView
                 android:id="@+id/tvFilm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Film"
+                android:text="Now Showing"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFilm"
-                android:paddingBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginTop="8dp"
+                android:paddingBottom="16dp" />
 
+            <!-- Favorites section -->
             <TextView
                 android:id="@+id/tvFavorite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Favorite"
+                android:text="Your Favorites"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFavorite"
-                android:paddingBottom="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="720dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="60dp"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="72dp" />
         </LinearLayout>
     </ScrollView>
 

@@ -72,8 +72,9 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/film1"
-                android:scaleType="fitXY" />
+                android:scaleType="centerCrop"
+                android:contentDescription="Movie poster"
+                app:srcCompat="@drawable/placeholder_movie" />
 
             <!-- Info singkat -->
             <TextView

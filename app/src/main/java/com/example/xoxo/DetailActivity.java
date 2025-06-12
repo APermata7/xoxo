@@ -5,10 +5,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.bumptech.glide.Glide;
 import com.example.xoxo.databinding.ActivityDetailBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.HashMap;
+
+public class DetailActivity extends AppCompatActivity {
     private ActivityDetailBinding binding;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private String userId;
+    private Film currentFilm;
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,40 +26,105 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        String judul = getIntent().getStringExtra("film_title");
-        String info = getIntent().getStringExtra("film_info");
-        String desc = getIntent().getStringExtra("film_desc");
-        String pemain = getIntent().getStringExtra("film_pemain");
-        String sutradara = getIntent().getStringExtra("film_sutradara");
-        int gambar = getIntent().getIntExtra("film_image",0);
+        // Initialize Firebase
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getCurrentUser().getUid();
 
-        binding.textJudul.setText(judul);
-        binding.textInfo.setText(info);
-        binding.textDeskripsi.setText(desc);
-        binding.textPemain.setText("Pemain: " + pemain);
-        binding.textSutradara.setText("Sutradara: " + sutradara);
-        binding.imagePoster.setImageResource(gambar);
-        binding.btnBack.setOnClickListener(this);
+        // Get film data from intent
+        currentFilm = new Film(
+                getIntent().getStringExtra("film_id"),
+                getIntent().getStringExtra("film_title"),
+                "",
+                getIntent().getStringExtra("film_harga"),
+                getIntent().getStringExtra("film_image_url"),
+                getIntent().getStringExtra("film_desc"),
+                getIntent().getStringExtra("film_info"),
+                getIntent().getStringExtra("film_pemain"),
+                getIntent().getStringExtra("film_sutradara")
+        );
 
-        // Aksi tombol favorit
-        binding.btnFav.setOnClickListener(view ->
-                Toast.makeText(this, "Ditambahkan ke Favorit", Toast.LENGTH_SHORT).show());
-
-        binding.btnBookmark.setOnClickListener(view ->
-                Toast.makeText(this, "Ditambahkan ke Bookmark", Toast.LENGTH_SHORT).show());
-
-        binding.btnShare.setOnClickListener(view -> {
-            String shareText = "Tonton \"" + judul + "\" sekarang!";
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-            startActivity(Intent.createChooser(shareIntent, "Bagikan Film"));
-        });
+        setupViews();
+        checkIfFavorite();
     }
 
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.btnBack)
-            finish();
+    private void setupViews() {
+        // Set film data
+        binding.textJudul.setText(currentFilm.getTitle());
+        binding.textInfo.setText(currentFilm.getInfo());
+        binding.textDeskripsi.setText(currentFilm.getDesc());
+        binding.textPemain.setText("Pemain: " + currentFilm.getPemain());
+        binding.textSutradara.setText("Sutradara: " + currentFilm.getSutradara());
+
+        // Load image with Glide
+        Glide.with(this)
+                .load(currentFilm.getImageUrl())
+                .placeholder(R.drawable.placeholder_movie)
+                .error(R.drawable.error_movie)
+                .into(binding.imagePoster);
+
+        // Back button
+        binding.btnBack.setOnClickListener(v -> finish());
+
+        // Favorite button
+        binding.btnFav.setOnClickListener(v -> toggleFavorite());
+
+        // Bookmark button
+        binding.btnBookmark.setOnClickListener(v ->
+                Toast.makeText(this, "Added to Bookmarks", Toast.LENGTH_SHORT).show());
+
+        // Share button
+        binding.btnShare.setOnClickListener(v -> shareFilm());
+    }
+
+    private void checkIfFavorite() {
+        db.collection("users").document(userId).collection("favorites")
+                .document(currentFilm.getId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        isFavorite = task.getResult().exists();
+                        updateFavoriteButton();
+                    }
+                });
+    }
+
+    private void toggleFavorite() {
+        isFavorite = !isFavorite;
+
+        if (isFavorite) {
+            db.collection("users").document(userId).collection("favorites")
+                    .document(currentFilm.getId())
+                    .set(new HashMap<>())
+                    .addOnSuccessListener(aVoid -> {
+                        updateFavoriteButton();
+                        Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            db.collection("users").document(userId).collection("favorites")
+                    .document(currentFilm.getId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        updateFavoriteButton();
+                        Toast.makeText(this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                    });
+        }
+    }
+
+    private void updateFavoriteButton() {
+        binding.btnFav.setImageResource(
+                isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite
+        );
+    }
+
+    private void shareFilm() {
+        String shareText = "Check out this movie: " + currentFilm.getTitle() +
+                "\n\n" + currentFilm.getDesc() +
+                "\n\nAvailable at: " + currentFilm.getBioskop();
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        startActivity(Intent.createChooser(shareIntent, "Share Movie"));
     }
 }

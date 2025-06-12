@@ -1,45 +1,49 @@
 package com.example.xoxo;
 
-import java.io.Serializable;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
-public class Film implements Serializable {
-    private int id;
+import java.util.HashMap;
+import java.util.Map;
+
+@IgnoreExtraProperties
+public class Film {
+    private String id;
     private String title;
     private String bioskop;
     private String harga;
+    private String imageUrl;
     private String desc;
     private String info;
     private String pemain;
     private String sutradara;
-    private int imageRes;
-    private boolean isFavorite;
-    private static final long serialVersionUID = 1L;
 
-    // Constructor, getters, and setters
-    public Film(int id, String title, String bioskop, String harga, int imageRes, String desc, String info, String pemain, String sutradara) {
+    @Exclude
+    private boolean isFavorite;
+
+    public Film() {}
+
+    public Film(String id, String title, String bioskop, String harga, String imageUrl,
+                String desc, String info, String pemain, String sutradara) {
         this.id = id;
         this.title = title;
         this.bioskop = bioskop;
         this.harga = harga;
-        this.imageRes = imageRes;
-        this.isFavorite = false;
+        this.imageUrl = imageUrl;
         this.desc = desc;
         this.info = info;
         this.pemain = pemain;
         this.sutradara = sutradara;
     }
 
-    // Add all getters and setters...
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
-
-    public int getId() {
+    // Getters and setters for all fields
+    @Exclude
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -52,6 +56,10 @@ public class Film implements Serializable {
 
     public String getHarga() {
         return harga;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getDesc() {
@@ -70,7 +78,13 @@ public class Film implements Serializable {
         return sutradara;
     }
 
-    public int getImageRes() {
-        return imageRes;
+    @Exclude
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    @Exclude
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

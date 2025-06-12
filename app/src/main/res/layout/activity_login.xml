@@ -38,14 +38,14 @@
             app:layout_constraintWidth_percent="0.8" />
 
         <EditText
-            android:id="@+id/etUsername"
+            android:id="@+id/etEmail"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginTop="54dp"
-            android:autofillHints="username"
+            android:autofillHints="emailAddress"
             android:background="@drawable/rounded_edit_text"
-            android:hint="@string/username"
-            android:inputType="textPersonName"
+            android:hint="@string/email_address"
+            android:inputType="textEmailAddress"
             android:padding="15dp"
             android:textColor="@color/black"
             android:textColorHint="@color/grey"
@@ -68,7 +68,7 @@
             android:textColorHint="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etUsername"
+            app:layout_constraintTop_toBottomOf="@id/etEmail"
             app:layout_constraintWidth_percent="0.8" />
 
         <Button

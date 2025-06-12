@@ -3,10 +3,19 @@ package com.example.xoxo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.xoxo.databinding.ItemFilmBinding;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder> {
@@ -26,15 +35,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
     public HomeAdapter(List<Film> filmList, boolean isFavoriteList,
                        OnFavoriteChangeListener favoriteListener,
                        OnFilmClickListener filmClickListener) {
-        this.filmList = new ArrayList<>(filmList);
+        this.filmList = filmList;
         this.isFavoriteList = isFavoriteList;
         this.favoriteListener = favoriteListener;
         this.filmClickListener = filmClickListener;
     }
 
     public void updateFilms(List<Film> newFilms) {
-        this.filmList.clear();
-        this.filmList.addAll(newFilms);
+        this.filmList = newFilms;
         notifyDataSetChanged();
     }
 
@@ -62,45 +70,40 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
 
     class FilmViewHolder extends RecyclerView.ViewHolder {
         private final ItemFilmBinding binding;
+        private final int cornerRadius;
 
         public FilmViewHolder(ItemFilmBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-            itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION && filmClickListener != null) {
-                    filmClickListener.onFilmClicked(filmList.get(position));
-                }
-            });
+            this.cornerRadius = itemView.getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.film_image_corner_radius);
         }
 
         public void bind(Film film) {
-            binding.filmImage.setImageResource(film.getImageRes());
+            Glide.with(itemView.getContext())
+                    .load(film.getImageUrl())
+                    .apply(new RequestOptions()
+                            .transform(new RoundedCorners(cornerRadius))
+                            .placeholder(R.drawable.placeholder_movie)
+                            .error(R.drawable.error_movie))
+                    .into(binding.filmImage);
+
             binding.filmTitle.setText(film.getTitle());
             binding.filmBioskop.setText(film.getBioskop());
             binding.filmHarga.setText(film.getHarga());
 
-            // Atur tampilan berdasarkan jenis list
-            if (isFavoriteList) {
-                binding.switch1.setText("Hapus Favorite");
-            } else {
-                binding.switch1.setText("Favorite");
-            }
-
-            // Set click listener untuk seluruh item
-            itemView.setOnClickListener(v -> {
-                if (filmClickListener != null) {
-                    filmClickListener.onFilmClicked(film);
-                }
-            });
-
-            // Set listener untuk switch favorite
-            binding.switch1.setOnCheckedChangeListener(null); // Reset dulu
+            binding.switch1.setText(isFavoriteList ? "Remove" : "Favorite");
+            binding.switch1.setOnCheckedChangeListener(null);
             binding.switch1.setChecked(film.isFavorite());
             binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (favoriteListener != null) {
                     favoriteListener.onFavoriteChanged(film, isChecked);
+                }
+            });
+
+            itemView.setOnClickListener(v -> {
+                if (filmClickListener != null) {
+                    filmClickListener.onFilmClicked(film);
                 }
             });
         }
