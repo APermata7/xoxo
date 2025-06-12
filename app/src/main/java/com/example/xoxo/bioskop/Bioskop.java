@@ -1,6 +1,5 @@
 package com.example.xoxo.bioskop;
 
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
@@ -8,7 +7,7 @@ import java.io.Serializable;
 
 public class Bioskop implements Serializable {
     @DocumentId
-    private String id; // ID dokumen Firestore
+    private String id;
     private String nama;
     private boolean isFavorite;
     private String address;
@@ -19,8 +18,13 @@ public class Bioskop implements Serializable {
     private long createdAt;
     private long updatedAt;
 
+    private String createdBy;
+    private String updatedBy;
+    private String createdByUsername;
+    private String updatedByUsername;
+
     public Bioskop() {
-        // Required empty constructor for Firestore
+        // empty constructor for Firestore
     }
 
     public Bioskop(String id, String nama, String city, String address, String info, String phoneNumber) {
@@ -116,6 +120,38 @@ public class Bioskop implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getCreatedByUsername() {
+        return createdByUsername;
+    }
+
+    public void setCreatedByUsername(String createdByUsername) {
+        this.createdByUsername = createdByUsername;
+    }
+
+    public String getUpdatedByUsername() {
+        return updatedByUsername;
+    }
+
+    public void setUpdatedByUsername(String updatedByUsername) {
+        this.updatedByUsername = updatedByUsername;
+    }
+
     // Clone method for editing
     public Bioskop clone() {
         Bioskop clone = new Bioskop();
@@ -129,6 +165,8 @@ public class Bioskop implements Serializable {
         clone.isFavorite = this.isFavorite;
         clone.createdAt = this.createdAt;
         clone.updatedAt = System.currentTimeMillis();
+        clone.createdBy = this.createdBy;
+        clone.createdByUsername = this.createdByUsername;
         return clone;
     }
 }

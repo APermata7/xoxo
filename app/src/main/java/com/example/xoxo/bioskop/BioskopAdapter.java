@@ -1,7 +1,6 @@
 package com.example.xoxo.bioskop;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
     private List<Bioskop> bioskopList;
     private Context context;
     private BioskopListener listener;
-    private boolean isAdmin;
+    private boolean canEdit;
 
     public interface BioskopListener {
         void onFavoriteChanged(Bioskop bioskop, boolean isFavorite);
@@ -34,10 +33,10 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
         void onItemClick(Bioskop bioskop);
     }
 
-    public BioskopAdapter(List<Bioskop> bioskopList, BioskopListener listener, boolean isAdmin) {
+    public BioskopAdapter(List<Bioskop> bioskopList, BioskopListener listener, boolean canEdit) {
         this.bioskopList = bioskopList;
         this.listener = listener;
-        this.isAdmin = isAdmin;
+        this.canEdit = canEdit;
     }
 
     @NonNull
@@ -53,7 +52,6 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
         Bioskop bioskop = bioskopList.get(position);
         holder.nama.setText(bioskop.getNama());
 
-        // Load cinema image if available
         if (bioskop.getImageUrl() != null && !bioskop.getImageUrl().isEmpty()) {
             holder.image.setVisibility(View.VISIBLE);
             Glide.with(context)
@@ -74,11 +72,10 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
             }
         });
 
-        // Show admin options
-        holder.btnMore.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+        holder.btnMore.setVisibility(canEdit ? View.VISIBLE : View.GONE);
 
         holder.btnMore.setOnClickListener(v -> {
-            if (isAdmin) {
+            if (canEdit) {
                 showPopupMenu(v, bioskop);
             }
         });

@@ -26,23 +26,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * Helper class for Cloudinary unsigned upload.
- */
 public class CloudinaryManager {
-    private static final String CLOUD_NAME = "dlmjtvnzn"; // Replace with your cloud name
-    private static final String UPLOAD_PRESET = "xoxo_upload_preset"; // Replace with your upload preset
+    private static final String CLOUD_NAME = "dlmjtvnzn";
+    private static final String UPLOAD_PRESET = "xoxo_upload_preset";
 
     public interface UploadCallback {
         void onSuccess(String imageUrl);
         void onError(Exception e);
     }
 
-    /**
-     * Upload image file to Cloudinary unsigned preset.
-     * @param file The image file to upload.
-     * @param callback Callback for result (success: url, error: exception)
-     */
     public static void uploadImage(File file, UploadCallback callback) {
         OkHttpClient client = new OkHttpClient();
 
@@ -102,7 +94,6 @@ public class CloudinaryManager {
         return tempFile;
     }
 
-    // Utility to run code on UI thread
     private static void runOnUiThread(Runnable runnable) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(runnable);

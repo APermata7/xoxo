@@ -16,7 +16,6 @@ import com.example.xoxo.HomeActivity;
 import com.example.xoxo.ProfileActivity;
 import com.example.xoxo.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -43,8 +42,8 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private FloatingActionButton fabAdd;
-    private BioskopAdminManager adminManager;
-    private boolean isAdmin = false;
+    private BioskopManager bioskopManager;
+    private boolean canEditCinemas = true;
 
     private Map<String, List<Bioskop>> bioskopPerKota = new HashMap<>();
     private String currentCity;
@@ -57,16 +56,14 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bioskop);
 
-        // Inisialisasi Firestore dan Auth
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        adminManager = new BioskopAdminManager(this);
+        bioskopManager = new BioskopManager(this);
 
         username = getIntent().getStringExtra("USERNAME");
         email = getIntent().getStringExtra("EMAIL");
         userId = mAuth.getCurrentUser().getUid();
 
-        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Cinemas");
@@ -75,16 +72,12 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
         recyclerView = findViewById(R.id.recyclerViewBioskop);
         fabAdd = findViewById(R.id.fabAddCinema);
 
-        // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Check if user is admin
-        checkAdminStatus();
+        checkUserAuthentication();
 
-        // Load data bioskop dari Firestore
         loadCinemasFromFirestore();
 
-        // Set up spinner
         spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -96,38 +89,34 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Setup FAB
         fabAdd.setOnClickListener(v -> {
             Intent intent = new Intent(BioskopActivity.this, BioskopFormActivity.class);
+            intent.putExtra("USERNAME", username);
             startActivityForResult(intent, REQUEST_ADD_CINEMA);
         });
     }
 
-    private void checkAdminStatus() {
-        adminManager.checkAdminAccess(userId, task -> {
-            isAdmin = task;
-            if (isAdmin) {
-                fabAdd.setVisibility(View.VISIBLE);
-            } else {
-                fabAdd.setVisibility(View.GONE);
-            }
-        });
+    private void checkUserAuthentication() {
+        if (mAuth.getCurrentUser() != null) {
+            canEditCinemas = true;
+            fabAdd.setVisibility(View.VISIBLE);
+        } else {
+            canEditCinemas = false;
+            fabAdd.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == REQUEST_ADD_CINEMA || requestCode == REQUEST_EDIT_CINEMA) && resultCode == RESULT_OK) {
-            // Refresh cinema list
             loadCinemasFromFirestore();
         }
     }
 
     private void loadCinemasFromFirestore() {
-        // Show loading indicator
         findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
 
-        // Ambil data bioskop dari Firestore
         db.collection("cinemas")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -136,7 +125,6 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
                     if (task.isSuccessful()) {
                         bioskopPerKota.clear();
 
-                        // Ambil juga data favorit pengguna
                         db.collection("users").document(userId).collection("favorites")
                                 .get()
                                 .addOnCompleteListener(favTask -> {
@@ -147,12 +135,10 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
                                         }
                                     }
 
-                                    // Proses data bioskop
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Bioskop bioskop = document.toObject(Bioskop.class);
                                         bioskop.setId(document.getId());
 
-                                        // Set status favorit jika ada di koleksi favorit pengguna
                                         if (favoritesMap.containsKey(bioskop.getId())) {
                                             bioskop.setFavorite(true);
                                         }
@@ -164,7 +150,6 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
                                         bioskopPerKota.get(city).add(bioskop);
                                     }
 
-                                    // Update spinner dengan kota yang tersedia
                                     updateCitySpinner();
                                 });
                     } else {
@@ -176,11 +161,9 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
     private void updateCitySpinner() {
         List<String> cities = new ArrayList<>(bioskopPerKota.keySet());
         if (cities.isEmpty()) {
-            // If no cinemas, show message
             findViewById(R.id.tvNoData).setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
 
-            // Add default cities to spinner
             cities.add("Jakarta");
             cities.add("Bandung");
             cities.add("Surabaya");
@@ -197,7 +180,6 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
             int position = cities.indexOf(currentCity);
             spinnerCity.setSelection(position);
         } else if (!cities.isEmpty()) {
-            // Select first city by default
             currentCity = cities.get(0);
             updateCinemaList(currentCity);
         }
@@ -206,7 +188,7 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
     private void updateCinemaList(String city) {
         if (bioskopPerKota.containsKey(city)) {
             List<Bioskop> bioskops = bioskopPerKota.get(city);
-            adapter = new BioskopAdapter(bioskops, this, isAdmin);
+            adapter = new BioskopAdapter(bioskops, this, canEditCinemas);
             recyclerView.setAdapter(adapter);
 
             if (bioskops.isEmpty()) {
@@ -215,8 +197,7 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
                 findViewById(R.id.tvNoData).setVisibility(View.GONE);
             }
         } else {
-            // If no cinemas for this city
-            adapter = new BioskopAdapter(new ArrayList<>(), this, isAdmin);
+            adapter = new BioskopAdapter(new ArrayList<>(), this, canEditCinemas);
             recyclerView.setAdapter(adapter);
             findViewById(R.id.tvNoData).setVisibility(View.VISIBLE);
         }
@@ -224,9 +205,7 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
 
     @Override
     public void onFavoriteChanged(Bioskop bioskop, boolean isFavorite) {
-        // Update status favorit di Firestore
         if (isFavorite) {
-            // Tambahkan ke favorit
             db.collection("users").document(userId).collection("favorites")
                     .document(bioskop.getId())
                     .set(new HashMap<String, Object>())
@@ -238,7 +217,6 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
                         Toast.makeText(this, "Gagal menyimpan favorit", Toast.LENGTH_SHORT).show();
                     });
         } else {
-            // Hapus dari favorit
             db.collection("users").document(userId).collection("favorites")
                     .document(bioskop.getId())
                     .delete()
@@ -256,6 +234,7 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
     public void onEditCinema(Bioskop bioskop) {
         Intent intent = new Intent(this, BioskopFormActivity.class);
         intent.putExtra("CINEMA_EDIT", bioskop);
+        intent.putExtra("USERNAME", username); // Pass username for attribution
         startActivityForResult(intent, REQUEST_EDIT_CINEMA);
     }
 
@@ -265,20 +244,20 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
                 .setTitle("Delete Cinema")
                 .setMessage("Are you sure you want to delete " + bioskop.getNama() + "?")
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    adminManager.deleteBioskop(bioskop, new BioskopAdminManager.BioskopOperationCallback() {
-                        @Override
-                        public void onSuccess(Bioskop deletedBioskop) {
-                            // Refresh the data
-                            loadCinemasFromFirestore();
-                        }
+                    bioskopManager.deleteBioskop(bioskop, userId, username,
+                            new BioskopManager.BioskopOperationCallback() {
+                                @Override
+                                public void onSuccess(Bioskop deletedBioskop) {
+                                    loadCinemasFromFirestore();
+                                }
 
-                        @Override
-                        public void onFailure(Exception e) {
-                            Toast.makeText(BioskopActivity.this,
-                                    "Failed to delete: " + e.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast.makeText(BioskopActivity.this,
+                                            "Failed to delete: " + e.getMessage(),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -294,7 +273,8 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
         intent.putExtra("CINEMA_PHONE", bioskop.getPhoneNumber());
         intent.putExtra("CINEMA_IMAGE", bioskop.getImageUrl());
         intent.putExtra("IS_FAVORITE", bioskop.isFavorite());
-        intent.putExtra("IS_ADMIN", isAdmin);
+        intent.putExtra("CAN_EDIT", canEditCinemas);
+        intent.putExtra("USERNAME", username); // Pass username for attribution
         startActivity(intent);
     }
 

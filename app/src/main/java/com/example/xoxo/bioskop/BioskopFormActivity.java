@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.xoxo.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class BioskopFormActivity extends AppCompatActivity {
     private ImageView imgCinema, btnBack;
     private Button btnSave, btnCancel;
 
-    private BioskopAdminManager adminManager;
+    private BioskopManager bioskopManager;
     private Bioskop editingBioskop;
     private Uri selectedImageUri;
     private boolean isEditMode = false;
@@ -45,9 +47,8 @@ public class BioskopFormActivity extends AppCompatActivity {
         initializeViews();
         setupSpinner();
 
-        adminManager = new BioskopAdminManager(this);
+        bioskopManager = new BioskopManager(this);
 
-        // Check if we're in edit mode
         if (getIntent().hasExtra("CINEMA_EDIT")) {
             isEditMode = true;
             editingBioskop = (Bioskop) getIntent().getSerializableExtra("CINEMA_EDIT");
@@ -70,7 +71,6 @@ public class BioskopFormActivity extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        // Get all cities from Firestore
         FirebaseFirestore.getInstance().collection("cities")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -86,7 +86,6 @@ public class BioskopFormActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Fallback to default cities
                     setupCityAdapter();
                 });
     }
@@ -96,7 +95,6 @@ public class BioskopFormActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, cities);
         spinnerCity.setAdapter(cityAdapter);
 
-        // If in edit mode, select the city of the cinema being edited
         if (isEditMode && editingBioskop != null) {
             int position = cities.indexOf(editingBioskop.getCity());
             if (position >= 0) {
@@ -111,7 +109,6 @@ public class BioskopFormActivity extends AppCompatActivity {
         etCinemaInfo.setText(editingBioskop.getInfo());
         etCinemaPhone.setText(editingBioskop.getPhoneNumber());
 
-        // Load image if available
         if (editingBioskop.getImageUrl() != null && !editingBioskop.getImageUrl().isEmpty()) {
             Glide.with(this)
                     .load(editingBioskop.getImageUrl())
@@ -159,8 +156,21 @@ public class BioskopFormActivity extends AppCompatActivity {
             return;
         }
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = currentUser != null ? currentUser.getUid() : "unknown";
+
+        String username = getIntent().getStringExtra("USERNAME");
+        if (username == null || username.isEmpty()) {
+            username = currentUser.getDisplayName();
+            if (username == null || username.isEmpty()) {
+                username = currentUser.getEmail();
+                if (username == null || username.isEmpty()) {
+                    username = userId.substring(0, Math.min(8, userId.length()));
+                }
+            }
+        }
+
         if (isEditMode && editingBioskop != null) {
-            // Update existing cinema
             Bioskop updatedBioskop = editingBioskop.clone();
             updatedBioskop.setNama(name);
             updatedBioskop.setAddress(address);
@@ -168,34 +178,42 @@ public class BioskopFormActivity extends AppCompatActivity {
             updatedBioskop.setPhoneNumber(phone);
             updatedBioskop.setCity(city);
 
-            adminManager.updateBioskop(updatedBioskop, selectedImageUri, new BioskopAdminManager.BioskopOperationCallback() {
-                @Override
-                public void onSuccess(Bioskop bioskop) {
-                    setResult(RESULT_OK);
-                    finish();
-                }
+            if (updatedBioskop.getCreatedBy() == null) {
+                updatedBioskop.setCreatedBy(userId);
+                updatedBioskop.setCreatedByUsername(username);
+            }
 
-                @Override
-                public void onFailure(Exception e) {
-                    Toast.makeText(BioskopFormActivity.this, "Gagal memperbarui bioskop: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            bioskopManager.updateBioskop(updatedBioskop, selectedImageUri, userId, username,
+                    new BioskopManager.BioskopOperationCallback() {
+                        @Override
+                        public void onSuccess(Bioskop bioskop) {
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            Toast.makeText(BioskopFormActivity.this,
+                                    "Gagal memperbarui bioskop: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else {
-            // Create new cinema
             Bioskop newBioskop = new Bioskop(null, name, city, address, info, phone);
 
-            adminManager.addBioskop(newBioskop, selectedImageUri, new BioskopAdminManager.BioskopOperationCallback() {
-                @Override
-                public void onSuccess(Bioskop bioskop) {
-                    setResult(RESULT_OK);
-                    finish();
-                }
+            bioskopManager.addBioskop(newBioskop, selectedImageUri, userId, username,
+                    new BioskopManager.BioskopOperationCallback() {
+                        @Override
+                        public void onSuccess(Bioskop bioskop) {
+                            setResult(RESULT_OK);
+                            finish();
+                        }
 
-                @Override
-                public void onFailure(Exception e) {
-                    Toast.makeText(BioskopFormActivity.this, "Gagal menambahkan bioskop: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                        @Override
+                        public void onFailure(Exception e) {
+                            Toast.makeText(BioskopFormActivity.this,
+                                    "Gagal menambahkan bioskop: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 }
