@@ -1,6 +1,9 @@
 package com.example.xoxo.bioskop;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +23,12 @@ import android.widget.PopupMenu;
 import com.bumptech.glide.Glide;
 
 public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHolder> {
-
+    private static final String TAG = "BioskopAdapter";
     private List<Bioskop> bioskopList;
     private Context context;
     private BioskopListener listener;
     private boolean canEdit;
+    private boolean isClickable = true;
 
     public interface BioskopListener {
         void onFavoriteChanged(Bioskop bioskop, boolean isFavorite);
@@ -65,24 +69,47 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
 
         updateFavoriteIcon(holder.favorite, bioskop.isFavorite());
 
-        holder.favorite.setOnClickListener(v -> {
-            boolean newFavoriteStatus = !bioskop.isFavorite();
-            if (listener != null) {
-                listener.onFavoriteChanged(bioskop, newFavoriteStatus);
+        holder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Favorite button clicked for: " + bioskop.getNama());
+                boolean newFavoriteStatus = !bioskop.isFavorite();
+                if (listener != null) {
+                    listener.onFavoriteChanged(bioskop, newFavoriteStatus);
+                }
             }
         });
 
         holder.btnMore.setVisibility(canEdit ? View.VISIBLE : View.GONE);
 
-        holder.btnMore.setOnClickListener(v -> {
-            if (canEdit) {
-                showPopupMenu(v, bioskop);
+        holder.btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "More button clicked for: " + bioskop.getNama());
+                if (canEdit) {
+                    showPopupMenu(v, bioskop);
+                }
             }
         });
 
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onItemClick(bioskop);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isClickable) return;
+
+                isClickable = false;
+                Log.d(TAG, "Cinema item clicked: " + bioskop.getNama());
+
+                if (listener != null) {
+                    listener.onItemClick(bioskop);
+                }
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isClickable = true;
+                    }
+                }, 500);
             }
         });
     }
@@ -95,11 +122,13 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.action_edit) {
+                    Log.d(TAG, "Edit menu selected for: " + bioskop.getNama());
                     if (listener != null) {
                         listener.onEditCinema(bioskop);
                     }
                     return true;
                 } else if (id == R.id.action_delete) {
+                    Log.d(TAG, "Delete menu selected for: " + bioskop.getNama());
                     if (listener != null) {
                         listener.onDeleteCinema(bioskop);
                     }
