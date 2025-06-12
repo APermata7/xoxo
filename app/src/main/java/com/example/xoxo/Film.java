@@ -62,6 +62,10 @@ public class Film {
         return imageUrl;
     }
 
+    public void setImageUrl (String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public String getDesc() {
         return desc;
     }
