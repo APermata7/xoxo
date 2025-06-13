@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="70dp"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,22 +49,7 @@
                     app:layout_constraintStart_toEndOf="@+id/btnBack"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Komponen lainnya (judul, poster, deskripsi, dll) -->
-            <!-- PASTE semua komponen yang kamu sudah buat sebelumnya di sini -->
-            <!-- Judul Film -->
-            <TextView
-                android:id="@+id/textJudul"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="JUDUL FILM"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_marginTop="30dp"/>
 
             <!-- Poster -->
             <ImageView
@@ -76,67 +62,115 @@
                 android:contentDescription="Movie poster"
                 app:srcCompat="@drawable/placeholder_movie" />
 
+            <!-- Tombol Upload -->
             <Button
                 android:id="@+id/btnUploadImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload New Image"
-                app:layout_constraintBottom_toBottomOf="@+id/imagePoster"
-                app:layout_constraintEnd_toEndOf="@+id/imagePoster"
-                app:layout_constraintStart_toStartOf="@+id/imagePoster" />
+                android:text="Upload Gambar"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"/>
 
+            <!-- Progress Upload -->
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/btnUploadImage"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_marginTop="4dp" />
 
-            <!-- Info singkat -->
-            <TextView
+            <!-- Judul Film -->
+            <EditText
+                android:id="@+id/textJudul"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Judul Film"
+                android:textColor="@android:color/white"
+                android:textColorHint="#CCCCCC"
+                android:backgroundTint="@android:color/white"
+                android:layout_marginTop="16dp"
+                android:enabled="false"/>
+
+            <!-- Info -->
+            <EditText
                 android:id="@+id/textInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Genre | Tahun Rilis | Jumlah Episode / Durasi"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"
-                android:textColor="@android:color/white"/>
+                android:hint="Info (Genre | Tahun | Durasi)"
+                android:textColor="@android:color/white"
+                android:textColorHint="#CCCCCC"
+                android:backgroundTint="@android:color/white"
+                android:enabled="false"/>
 
             <!-- Deskripsi -->
-            <TextView
+            <EditText
                 android:id="@+id/textDeskripsi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:hint="Deskripsi Film"
+                android:minLines="4"
+                android:gravity="top"
                 android:textColor="@android:color/white"
-                android:textSize="13sp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis et lacus leo. Donec laoreet ante ut fermentum iaculis. Integer fringilla, dui eget convallis placerat, nulla urna commodo mi, in efficitur sapien mi at est. Curabitur molestie elit vitae urna ultricies iaculis. Nunc non massa efficitur, viverra ligula a, mollis ex. "/>
+                android:textColorHint="#CCCCCC"
+                android:backgroundTint="@android:color/white"
+                android:enabled="false"/>
 
-
-            <!-- Pemain dan Sutradara -->
-            <TextView
+            <!-- Pemain -->
+            <EditText
                 android:id="@+id/textPemain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pemain:"
+                android:hint="Pemain"
                 android:textColor="@android:color/white"
-                android:paddingStart="16dp"
-                android:textStyle="bold"/>
-            <TextView
+                android:textColorHint="#CCCCCC"
+                android:backgroundTint="@android:color/white"
+                android:enabled="false"/>
+
+            <!-- Sutradara -->
+            <EditText
                 android:id="@+id/textSutradara"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sutradara:"
+                android:hint="Sutradara"
                 android:textColor="@android:color/white"
-                android:paddingStart="16dp"
-                android:textStyle="bold"/>
+                android:textColorHint="#CCCCCC"
+                android:backgroundTint="@android:color/white"
+                android:enabled="false"/>
 
-            <!-- Ikon favorite, bookmark, share -->
+            <!-- Tombol Aksi: Simpan, Edit, Hapus -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Edit" />
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Simpan"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnDelete"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Hapus" />
+            </LinearLayout>
+
+            <!-- Tombol Favorite, Bookmark, Share -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,8 +202,6 @@
                     android:background="@android:color/transparent"
                     app:tint="@android:color/white" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
