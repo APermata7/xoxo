@@ -43,6 +43,9 @@
             android:name=".FilmActivity"
             android:exported="false" />
         <activity
+            android:name=".FilmFormActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
