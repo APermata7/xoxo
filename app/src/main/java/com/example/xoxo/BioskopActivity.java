@@ -1,4 +1,4 @@
-package com.example.xoxo.bioskop;
+package com.example.xoxo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.xoxo.HomeActivity;
 import com.example.xoxo.ProfileActivity;
-import com.example.xoxo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -468,6 +467,10 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra("USERNAME", username);
             intent.putExtra("EMAIL", email);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        } else if (id == R.id.film) {
+            Intent intent = new Intent(this, FilmActivity.class);
             startActivity(intent);
             overridePendingTransition(0, 0);
         } else if (id == R.id.bioskop) {

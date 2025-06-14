@@ -1,12 +1,10 @@
-package com.example.xoxo.cloudinary;
+package com.example.xoxo;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;

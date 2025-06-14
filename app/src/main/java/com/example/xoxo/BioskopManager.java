@@ -1,4 +1,4 @@
-package com.example.xoxo.bioskop;
+package com.example.xoxo;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.xoxo.cloudinary.CloudinaryManager;
+import com.example.xoxo.CloudinaryManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

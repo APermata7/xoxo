@@ -13,7 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.xoxo.cloudinary.CloudinaryManager;
+import com.example.xoxo.CloudinaryManager;
 import com.example.xoxo.databinding.ActivityFilmFormBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
 
