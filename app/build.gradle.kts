@@ -56,10 +56,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
     implementation("com.cloudinary:cloudinary-android:2.3.1")
     implementation("com.cloudinary:cloudinary-core:1.33.0")
-
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 }
 

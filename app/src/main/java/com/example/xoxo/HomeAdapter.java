@@ -92,15 +92,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
             binding.filmBioskop.setText(film.getBioskop());
             binding.filmHarga.setText(film.getHarga());
 
-            binding.switch1.setText(isFavoriteList ? "Remove" : "Favorite");
-            binding.switch1.setOnCheckedChangeListener(null);
-            binding.switch1.setChecked(film.isFavorite());
-            binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (favoriteListener != null) {
-                    favoriteListener.onFavoriteChanged(film, isChecked);
-                }
-            });
-
             itemView.setOnClickListener(v -> {
                 if (filmClickListener != null) {
                     filmClickListener.onFilmClicked(film);

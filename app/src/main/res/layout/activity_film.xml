@@ -54,38 +54,6 @@
                     android:clickable="true" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- Welcome message -->
-                <TextView
-                    android:id="@+id/tvWelcome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginBottom="15dp"
-                    tools:text="Welcome," />
-
-                <TextView
-                    android:id="@+id/tvUsername"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="15dp"
-                    tools:text="user" />
-
-            </LinearLayout>
-
             <!-- Films section -->
             <TextView
                 android:id="@+id/tvFilm"
@@ -96,33 +64,16 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp" />
+                android:layout_marginTop="20dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFilm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:layout_marginHorizontal="14dp"
                 android:paddingBottom="30dp" />
 
-            <!-- Favorites section -->
-            <TextView
-                android:id="@+id/tvFavorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Your Favorites:"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFavorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:paddingBottom="72dp" />
         </LinearLayout>
     </ScrollView>
 
@@ -147,7 +98,7 @@
             android:contentDescription="Home"
             android:focusable="true"
             android:onClick="onClick"
-            android:src="@drawable/ic_home"
+            android:src="@drawable/ic_home_nactive"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/film"
             app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +117,7 @@
             app:layout_constraintEnd_toStartOf="@+id/bioskop"
             app:layout_constraintStart_toEndOf="@+id/home"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_film" />
+            app:srcCompat="@drawable/ic_film_active" />
 
         <!-- Gambar 3 -->
         <ImageView
