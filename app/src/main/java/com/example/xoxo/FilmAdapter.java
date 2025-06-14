@@ -55,7 +55,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.FilmViewHolder
 
         public void bind(Film film) {
             binding.filmTitle.setText(film.getTitle());
-            binding.filmBioskop.setText(film.getInfo());
+            binding.filmBioskop.setText(film.getBioskop());
             binding.filmHarga.setText(film.getHarga());
 
             // Load image using Glide
