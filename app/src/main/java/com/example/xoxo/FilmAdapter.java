@@ -1,6 +1,5 @@
 package com.example.xoxo;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.xoxo.databinding.ItemFilmsBinding;
-import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.FilmViewHolder> {
 
@@ -68,7 +68,26 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.FilmViewHolder
         public void bind(Film film) {
             binding.filmTitle.setText(film.getTitle());
             binding.filmBioskop.setText(film.getBioskop());
-            binding.filmHarga.setText(film.getHarga());
+
+            // Format harga ke Rupiah langsung di sini
+            try {
+                // Bersihkan string dari karakter non-numerik
+                String cleanHarga = film.getHarga().replaceAll("[^\\d]", "");
+                double harga = Double.parseDouble(cleanHarga);
+
+                // Buat format Rupiah
+                Locale localeID = new Locale("in", "ID");
+                NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+                formatRupiah.setMaximumFractionDigits(0); // Tanpa desimal
+
+                String formattedHarga = formatRupiah.format(harga)
+                        .replace(",", ".");    // Ganti koma dengan titik
+
+                binding.filmHarga.setText(formattedHarga);
+            } catch (Exception e) {
+                // Jika parsing gagal, tampilkan harga asli
+                binding.filmHarga.setText(film.getHarga());
+            }
 
             // Load image using Glide
             Glide.with(itemView.getContext())
