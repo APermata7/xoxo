@@ -1,4 +1,4 @@
-package com.example.xoxo.film;
+package com.example.xoxo;
 
 public class FilmFormActivity {
 }

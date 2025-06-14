@@ -36,6 +36,16 @@ public class Film {
         this.sutradara = sutradara;
     }
 
+    public Film(String title, String desc, String harga, String imageUrl, String info, String pemain, String sutradara) {
+        this.title = title;
+        this.desc = desc;
+        this.harga = harga;
+        this.imageUrl = imageUrl;
+        this.info = info;
+        this.pemain = pemain;
+        this.sutradara = sutradara;
+    }
+
     // Getters and setters for all fields
     @Exclude
     public String getId() {

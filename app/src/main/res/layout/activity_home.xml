@@ -161,7 +161,7 @@
             android:layout_marginBottom="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onClick"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bioskop"
             app:layout_constraintStart_toEndOf="@+id/home"
