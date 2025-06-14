@@ -123,11 +123,26 @@
             android:onClick="onClick"
             android:src="@drawable/ic_home"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bioskop"
+            app:layout_constraintEnd_toStartOf="@+id/film"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Gambar 2 -->
+        <ImageView
+            android:id="@+id/film"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onClick"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bioskop"
+            app:layout_constraintStart_toEndOf="@+id/home"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_film" />
+
+        <!-- Gambar 3 -->
         <ImageView
             android:id="@+id/bioskop"
             android:layout_width="100dp"
@@ -140,10 +155,10 @@
             android:src="@drawable/ic_bioskop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/profile"
-            app:layout_constraintStart_toEndOf="@+id/home"
+            app:layout_constraintStart_toEndOf="@+id/film"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Gambar 3 -->
+        <!-- Gambar 4 -->
         <ImageView
             android:id="@+id/profile"
             android:layout_width="100dp"
