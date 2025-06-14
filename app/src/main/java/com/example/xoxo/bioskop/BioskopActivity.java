@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.xoxo.FilmActivity;
 import com.example.xoxo.HomeActivity;
 import com.example.xoxo.ProfileActivity;
 import com.example.xoxo.R;
@@ -461,6 +462,7 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
         startActivityForResult(intent, REQUEST_VIEW_DETAIL);
     }
 
+
     public void onClick(View view) {
         int id = view.getId();
 
@@ -468,6 +470,10 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra("USERNAME", username);
             intent.putExtra("EMAIL", email);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        } else if (id == R.id.film) {
+            Intent intent = new Intent(this, FilmActivity.class);
             startActivity(intent);
             overridePendingTransition(0, 0);
         } else if (id == R.id.bioskop) {
