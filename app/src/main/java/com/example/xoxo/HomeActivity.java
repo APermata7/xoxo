@@ -87,7 +87,7 @@ public class HomeActivity extends AppCompatActivity implements
                         if (document != null && document.exists()) {
                             String username = document.getString("username");
                             if (username != null) {
-                                String welcomeMessage = "Welcome, " + username + "!";
+                                String welcomeMessage = "Welcome " + username + "\uD83D\uDC4B!";
                                 ((TextView) findViewById(R.id.tvUsername)).setText(welcomeMessage);
                             }
                         }
@@ -204,5 +204,10 @@ public class HomeActivity extends AppCompatActivity implements
             startActivity(new Intent(this, ProfileActivity.class));
             overridePendingTransition(0, 0);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
