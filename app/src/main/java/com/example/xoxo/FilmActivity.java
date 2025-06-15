@@ -94,7 +94,7 @@ public class FilmActivity extends AppCompatActivity implements View.OnClickListe
             overridePendingTransition(0, 0);
             finish();
         } else if (id == R.id.film) {
-            Toast.makeText(this, "Anda sedang di halaman film.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Anda sedang di halaman Film.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.bioskop) {
             startActivity(new Intent(this, BioskopActivity.class));
             overridePendingTransition(0, 0);

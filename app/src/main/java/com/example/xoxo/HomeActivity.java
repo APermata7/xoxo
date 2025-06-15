@@ -190,7 +190,7 @@ public class HomeActivity extends AppCompatActivity implements
     private void handleClick(View view) {
         int id = view.getId();
         if (id == R.id.home) {
-            Toast.makeText(this, "You're already on home", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Anda sedang di halaman Home.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.film) {
             startActivity(new Intent(this, FilmActivity.class));
             overridePendingTransition(0, 0);

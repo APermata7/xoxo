@@ -170,7 +170,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             intent = new Intent(this, BioskopActivity.class);
         }
         else if (id == R.id.profile) {
-            Toast.makeText(this, "You're already on profile page", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Anda sedang di halaman Profile.", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -465,8 +465,6 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
 
         if (id == R.id.home) {
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("USERNAME", username);
-            intent.putExtra("EMAIL", email);
             startActivity(intent);
             overridePendingTransition(0, 0);
         } else if (id == R.id.film) {
@@ -474,11 +472,9 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
             startActivity(intent);
             overridePendingTransition(0, 0);
         } else if (id == R.id.bioskop) {
-            Toast.makeText(this, "Kamu sedang di halaman Bioskop", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Anda sedang di halaman Bioskop.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.profile || id == R.id.bioskop_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra("USERNAME", username);
-            intent.putExtra("EMAIL", email);
             startActivity(intent);
             overridePendingTransition(0, 0);
         }
