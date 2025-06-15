@@ -70,6 +70,18 @@
         <activity
             android:name=".DetailActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".SettingActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".HubungiKamiActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".TentangKamiActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -59,6 +59,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             overridePendingTransition(0, 0);
         });
 
+        findViewById(R.id.menuPengaturan).setOnClickListener(v -> {
+            startActivity(new Intent(this, SettingActivity.class));
+            overridePendingTransition(0, 0);
+        });
+
+
         findViewById(R.id.btnLogout).setOnClickListener(v -> logoutUser());
 
         tvUsername.setOnClickListener(v -> showEditUsernameDialog());
