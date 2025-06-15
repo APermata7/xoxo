@@ -29,20 +29,16 @@ public class StarredCinemaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starred_cinema);
 
-        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Initialize views
         recyclerView = findViewById(R.id.recyclerViewBioskop);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new StarredCinemaAdapter(starredCinemas);
         recyclerView.setAdapter(adapter);
 
-        // Back button
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        // Load starred cinemas
         loadStarredCinemas();
     }
 
@@ -59,7 +55,6 @@ public class StarredCinemaActivity extends AppCompatActivity {
                             tasks.add(getCinemaDetails(cinemaId));
                         }
 
-                        // Tunggu semua pemanggilan getCinemaDetails selesai
                         Tasks.whenAllComplete(tasks)
                                 .addOnCompleteListener(combinedTask -> {
                                     adapter.notifyDataSetChanged();

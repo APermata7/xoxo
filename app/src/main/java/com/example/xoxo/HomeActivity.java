@@ -37,7 +37,6 @@ public class HomeActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
@@ -53,13 +52,14 @@ public class HomeActivity extends AppCompatActivity implements
         RecyclerView rvFilm = findViewById(R.id.rvFilm);
         RecyclerView rvFavorite = findViewById(R.id.rvFavorite);
 
-        // Horizontal layout for films
         LinearLayoutManager filmLayoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);
         rvFilm.setLayoutManager(filmLayoutManager);
 
-        // Vertical layout for favorites
-        rvFavorite.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager favoriteLayoutManager = new LinearLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL, false
+        );
+        rvFavorite.setLayoutManager(favoriteLayoutManager);
     }
 
     private void setupClickListeners() {
@@ -87,7 +87,7 @@ public class HomeActivity extends AppCompatActivity implements
                         if (document != null && document.exists()) {
                             String username = document.getString("username");
                             if (username != null) {
-                                String welcomeMessage = "Welcome, " + username + "!";
+                                String welcomeMessage = "Welcome, " + username + "!\uD83D\uDC4B";
                                 ((TextView) findViewById(R.id.tvUsername)).setText(welcomeMessage);
                             }
                         }
@@ -142,7 +142,6 @@ public class HomeActivity extends AppCompatActivity implements
         filmAdapter.updateFilms(allFilms);
         favoriteAdapter.updateFilms(favoriteFilms);
 
-        // Show/hide favorites section based on content
         findViewById(R.id.tvFavorite).setVisibility(
                 favoriteFilms.isEmpty() ? View.GONE : View.VISIBLE
         );
@@ -153,7 +152,6 @@ public class HomeActivity extends AppCompatActivity implements
         film.setFavorite(isFavorite);
 
         if (isFavorite) {
-            // Add to favorites in Firestore
             db.collection("users").document(userId).collection("favorites")
                     .document(film.getId())
                     .set(new HashMap<>())
@@ -164,7 +162,6 @@ public class HomeActivity extends AppCompatActivity implements
                         }
                     });
         } else {
-            // Remove from favorites in Firestore
             db.collection("users").document(userId).collection("favorites")
                     .document(film.getId())
                     .delete()
@@ -193,7 +190,7 @@ public class HomeActivity extends AppCompatActivity implements
     private void handleClick(View view) {
         int id = view.getId();
         if (id == R.id.home) {
-            Toast.makeText(this, "You're already on home", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Anda sedang di halaman Home.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.film) {
             startActivity(new Intent(this, FilmActivity.class));
             overridePendingTransition(0, 0);

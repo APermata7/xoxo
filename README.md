@@ -1,4 +1,6 @@
-# 🎬 XOXO - List Film & Bioskop
+![Image](https://github.com/user-attachments/assets/c6188038-3a9c-4d3b-b849-79343ed81007)
+
+### 🎬 XOXO - List Film & Bioskop
 Helping movie lovers explore films and cinemas with ease
 
 ***
@@ -8,9 +10,20 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 
 ***
 
+## Kelompok 1
+| Nama | NIM |
+|:----------|:-----------:|
+| Aulia Permata Kumala | 235150701111001 | 
+| Farhah Mutiara Arifa | 235150700111002 | 
+| Verda Aulia Setri | 235150701111014 | 
+| Lovely Ito Panjaitan | 235150700111012 | 
+| Lidwina Eleonora Dora | 235150707111019 | 
+
+***
+
 ### ✨ Fitur
 #### 🔐 Login dan Register:
-- 🔑 Login: Masukkan username dan password, lalu tekan "Login".
+- 🔑 Login: Masukkan username dan password, lalu tekan "Login" atau sign in lewat Google.
 - 📝 Daftar: Belum punya akun? Klik untuk registrasi.
 - ✅ Validasi dengan memeriksa username, email, password, dan konfirmasi.
 - 🚪 Berhasil Login akan diarahkan ke halaman utama setelah login sukses.
@@ -18,12 +31,15 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 
 ####    🏠 Homepage:
 - 🎬 Tampilkan film (poster, judul, bioskop, harga).
-- ❤️ Tambah / hapus favorit film.
 - 🔄 Dua RecyclerView: Daftar *Film* dan *Favorit*.
 
 #### 🎬 Detail Film:
 - 📄 Tampilkan detail lengkap film (judul, informasi umum (genre, tahun rilis, durasi/episode), deskripsi film, nama pemain utama, nama sutradara, poster film).
-- ❤️ Favorite, bookmark, share.
+- ❤️ Favorite dan share.
+- 🎬 Download tiket film.
+
+####   🎦 Film :
+- 📍 CRUD untuk film.
 
 ####   🍿 Bioskop :
 - 🔻 Spinner untuk memilih kota.
@@ -31,8 +47,10 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 - ⭐ Ikon favorit yang clickable dan terhubung dengan Bioskop Detail.
 - 🔄 RecylerView : Semua nama bioskop yang ada pada kota pilihan.
 - 📌 Tampilan detail dari bioskop yang dipilih (lokasi dan nomor telp).
+- ➕ CRUD untuk bioskop.
 
 ####   👤 Profile:
 - 🙍‍♂️ Tampilkan informasi pengguna (username, email).
+- 📄 Edit username
 - ⚙️ Menu pengaturan akun.
-- 🎞️ Menu film favorit saya.
+- 🎞️ Menu film favorit saya dan bioskop star saya.

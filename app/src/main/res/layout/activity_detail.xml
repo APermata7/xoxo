@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Header -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,52 +28,62 @@
                     android:id="@+id/btnBack"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/ic_back"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvDetail"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvDetail"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvDetail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Detail Film"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Detail Film"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btnBack"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Movie Title -->
             <TextView
                 android:id="@+id/textJudul"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="JUDUL FILM"
+                android:maxLines="3"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:gravity="center"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"/>
 
-            <!-- Poster -->
             <ImageView
                 android:id="@+id/imagePoster"
-                android:layout_width="350dp"
-                android:layout_height="200dp"
+                android:layout_width="220dp"
+                android:layout_height="320dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:background="@drawable/placeholder_movie"
                 android:contentDescription="Movie poster"
                 app:srcCompat="@drawable/placeholder_movie" />
 
-            <!-- Price -->
+
             <TextView
                 android:id="@+id/textHarga"
                 android:layout_width="match_parent"
@@ -84,9 +93,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="12dp"/>
 
-            <!-- Info -->
             <TextView
                 android:id="@+id/textInfo"
                 android:layout_width="match_parent"
@@ -98,7 +106,6 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@android:color/white"/>
 
-            <!-- Description -->
             <TextView
                 android:id="@+id/textDeskripsi"
                 android:layout_width="match_parent"
@@ -108,7 +115,6 @@
                 android:textSize="13sp"
                 android:text="Lorem ipsum dolor sit amet..."/>
 
-            <!-- Cast and Director -->
             <TextView
                 android:id="@+id/textPemain"
                 android:layout_width="match_parent"
@@ -129,7 +135,6 @@
                 android:paddingTop="4dp"
                 android:textStyle="bold"/>
 
-            <!-- Favorite and Share Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,19 +164,17 @@
                     android:scaleType="centerInside"/>
             </LinearLayout>
 
-            <!-- Download Ticket Button -->
             <Button
                 android:id="@+id/btnDownload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="70dp"
                 android:backgroundTint="@color/secondary"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:text="Download Tiket"
-                android:drawableStart="@drawable/ic_download"
                 android:drawablePadding="8dp"
                 android:paddingVertical="12dp"
                 android:elevation="4dp"

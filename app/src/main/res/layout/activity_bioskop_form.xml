@@ -18,7 +18,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Header -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +49,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Cinema Image -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -74,7 +72,6 @@
                     android:textColor="@color/white" />
             </FrameLayout>
 
-            <!-- Form Fields -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -164,7 +161,6 @@
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -179,6 +175,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/grey"
+                    android:textColor="@color/white"
                     android:text="Cancel" />
 
                 <Button

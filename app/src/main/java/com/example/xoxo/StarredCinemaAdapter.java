@@ -48,7 +48,6 @@ public class StarredCinemaAdapter extends RecyclerView.Adapter<StarredCinemaAdap
         holder.tvPhone.setText(bioskop.getPhoneNumber());
         holder.tvInfo.setText(bioskop.getInfo());
 
-        // Load image with Glide
         Glide.with(holder.itemView.getContext())
                 .load(bioskop.getImageUrl())
                 .placeholder(R.drawable.placeholder_cinema)
@@ -62,7 +61,7 @@ public class StarredCinemaAdapter extends RecyclerView.Adapter<StarredCinemaAdap
 
     private void removeFromStarred(String cinemaId, int position, Context context) {
         db.collection("users").document(userId)
-                .collection("favorites") // Ubah dari starred_cinemas ke favorites
+                .collection("favorites")
                 .document(cinemaId)
                 .delete()
                 .addOnSuccessListener(aVoid -> {

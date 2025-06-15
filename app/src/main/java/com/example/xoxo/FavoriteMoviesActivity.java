@@ -26,20 +26,16 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_movies);
 
-        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Initialize views
         recyclerView = findViewById(R.id.rvFilm);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FavoriteMoviesAdapter(favoriteMovies);
         recyclerView.setAdapter(adapter);
 
-        // Back button
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        // Load favorite movies
         loadFavoriteMovies();
     }
 

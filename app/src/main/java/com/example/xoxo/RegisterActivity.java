@@ -61,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        // Menampilkan loading indicator
         binding.btnRegister.setEnabled(false);
 
         mAuth.createUserWithEmailAndPassword(email, password)
