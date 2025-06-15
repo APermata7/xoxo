@@ -183,7 +183,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Paint paint = new Paint();
 
-        paint.setColor(Color.parseColor("#FF6200EE"));
+        paint.setColor(Color.parseColor("#00000000"));
         paint.setTextSize(50f);
         paint.setFakeBoldText(true);
         canvas.drawText("TIKET BIOSKOP", 50, 100, paint);
@@ -206,7 +206,7 @@ public class DetailActivity extends AppCompatActivity {
         yPos += 50;
         canvas.drawText("Sutradara: " + currentFilm.getSutradara(), 50, yPos, paint);
 
-        paint.setColor(Color.parseColor("#FF6200EE"));
+        paint.setColor(Color.parseColor("#00000000"));
         paint.setTextSize(30f);
         canvas.drawText("Terima kasih telah memesan!", 50, height-100, paint);
 
