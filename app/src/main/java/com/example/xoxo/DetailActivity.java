@@ -60,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         return new Film(
                 getIntent().getStringExtra("film_id"),
                 getIntent().getStringExtra("film_title"),
-                "",
+                getIntent().getStringExtra("film_bioskop"),
                 getIntent().getStringExtra("film_harga"),
                 getIntent().getStringExtra("film_image_url"),
                 getIntent().getStringExtra("film_desc"),
@@ -204,83 +204,77 @@ public class DetailActivity extends AppCompatActivity {
         return Math.round(dp * density);
     }
     private Bitmap createTicketBitmap() {
-        // Convert dp to px for image dimensions
         int imageWidthPx = dpToPx(220);
         int imageHeightPx = dpToPx(320);
 
-        // Calculate ticket width (wider than image)
-        int width = imageWidthPx + 200; // Add padding
-        int height = 1600; // Increased height to accommodate all elements
+        int width = imageWidthPx + 200;
+        int height = 1500;
 
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        // Draw white background
         canvas.drawColor(Color.WHITE);
 
         Paint paint = new Paint();
 
-        // Draw "TIKET BIOSKOP" in black
         paint.setColor(Color.BLACK);
         paint.setTextSize(50f);
         paint.setFakeBoldText(true);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("XOXO - TIKET BIOSKOP", 50, 100, paint);
 
-        // Draw line separator
+        String mainTitle = "XOXO - TIKET BIOSKOP";
+        float titleWidth = paint.measureText(mainTitle);
+        float titleX = (width - titleWidth) / 2;
+        canvas.drawText(mainTitle, titleX, 100, paint);
+
+        paint.setTextSize(35f);
+        paint.setFakeBoldText(true);
+        String cinemaName = currentFilm.getBioskop();
+        if (cinemaName == null || cinemaName.isEmpty()) {
+            cinemaName = "Bioskop XOXO";
+        }
+        float cinemaWidth = paint.measureText(cinemaName);
+        float cinemaX = (width - cinemaWidth) / 2;
+        canvas.drawText(cinemaName, cinemaX, 150, paint);
+
         paint.setStrokeWidth(4f);
         paint.setColor(Color.BLACK);
-        canvas.drawLine(50, 130, width-50, 130, paint);
+        canvas.drawLine(50, 180, width-50, 180, paint);
 
-        // Draw film image with original aspect ratio (center cropped)
         if (filmBitmap != null) {
-            // Calculate position to center the image horizontally
             int imageLeft = (width - imageWidthPx) / 2;
-
-            // Create a center-cropped version of the bitmap
             Bitmap centerCropped = getCenterCroppedBitmap(filmBitmap, imageWidthPx, imageHeightPx);
-            canvas.drawBitmap(centerCropped, imageLeft, 160, paint);
+            canvas.drawBitmap(centerCropped, imageLeft, 210, paint);
         }
 
-        // Position details below the image
-        int yPos = 160 + imageHeightPx + 40;
+        int yPos = 210 + imageHeightPx + 60;
 
-        // Draw film details
         paint.setColor(Color.BLACK);
-        paint.setTextSize(45f);
+        paint.setTextSize(40f);
+        paint.setFakeBoldText(true);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-
-        // Format harga for ticket
-        String formattedHarga = formatHargaForTicket(currentFilm.getHarga());
-
-        yPos += 40;
-        // Draw title and get the new yPos based on how many lines it took
         yPos = drawMultilineTextAndGetY(canvas, paint, currentFilm.getTitle(), 50, yPos, width - 100);
 
-        // Add some space between title and price
-        yPos += 30;
+        yPos += 40;
 
-        // Draw price
+        paint.setTextSize(32f);
         paint.setFakeBoldText(false);
-        paint.setTextSize(35f);
+        String formattedHarga = formatHargaForTicket(currentFilm.getHarga());
         canvas.drawText(formattedHarga, 50, yPos, paint);
 
-        // Add space before info
-        yPos += 50;
+        yPos += 60;
 
         paint.setTextSize(25f);
-        // Draw info
+        paint.setFakeBoldText(false);
         yPos = drawMultilineTextAndGetY(canvas, paint, currentFilm.getInfo(), 50, yPos, width - 100);
 
-        // Thank you message
-        paint.setColor(Color.BLACK);
         paint.setTextSize(30f);
+        paint.setFakeBoldText(true);
         canvas.drawText("Terima kasih telah memesan!", 50, height-100, paint);
 
         return bitmap;
     }
 
-    // New method that returns the new Y position after drawing multiline text
     private int drawMultilineTextAndGetY(Canvas canvas, Paint paint, String text, float x, float y, float maxWidth) {
         String[] words = text.split(" ");
         StringBuilder currentLine = new StringBuilder();
@@ -291,7 +285,6 @@ public class DetailActivity extends AppCompatActivity {
             float testWidth = paint.measureText(testLine);
 
             if (testWidth > maxWidth) {
-                // Draw the current line and move to next line
                 canvas.drawText(currentLine.toString(), x, y, paint);
                 y += lineHeight;
                 currentLine = new StringBuilder(word);
@@ -300,12 +293,10 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-        // Draw the last line
         if (!currentLine.toString().isEmpty()) {
             canvas.drawText(currentLine.toString(), x, y, paint);
         }
 
-        // Return the new Y position (current y + one more line height)
         return (int) (y + lineHeight);
     }
 
@@ -318,11 +309,9 @@ public class DetailActivity extends AppCompatActivity {
         int cropHeight = source.getHeight();
 
         if (sourceRatio > targetRatio) {
-            // Source is wider - crop horizontally
             cropWidth = (int) (source.getHeight() * targetRatio);
             x = (source.getWidth() - cropWidth) / 2;
         } else {
-            // Source is taller - crop vertically
             cropHeight = (int) (source.getWidth() / targetRatio);
             y = (source.getHeight() - cropHeight) / 2;
         }
