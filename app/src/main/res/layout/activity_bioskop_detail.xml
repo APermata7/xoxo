@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bioskop.BioskopDetailActivity"
+    tools:context=".BioskopDetailActivity"
     android:background="@color/black">
 
     <androidx.appcompat.widget.Toolbar
@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Cinema Image -->
             <ImageView
                 android:id="@+id/imgCinema"
                 android:layout_width="match_parent"
@@ -38,7 +37,6 @@
                 tools:visibility="visible"
                 tools:src="@drawable/ic_cinema_placeholder"/>
 
-            <!-- Cinema Name -->
             <TextView
                 android:id="@+id/tvCinemaName"
                 android:layout_width="match_parent"
@@ -49,7 +47,6 @@
                 android:padding="16dp"
                 tools:text="Cinema XXI Malang" />
 
-            <!-- Favorite Button -->
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +79,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Cinema Information -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +93,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Address Section -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -113,7 +108,6 @@
                         android:textColor="@color/white"
                         tools:text="Jalan Veteran no. 8, Malang Town Square, Lantai Upper Ground, Unit UG-03."/>
 
-                    <!-- Phone Section -->
                     <LinearLayout
                         android:id="@+id/layoutPhone"
                         android:layout_width="match_parent"
@@ -137,7 +131,6 @@
                             tools:text="+628XXXXX"/>
                     </LinearLayout>
 
-                    <!-- Info Section -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

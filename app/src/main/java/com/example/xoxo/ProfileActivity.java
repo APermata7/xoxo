@@ -1,6 +1,5 @@
 package com.example.xoxo;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,84 +8,74 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.xoxo.bioskop.BioskopActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
-    private String userId;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private ProfileAdapter profileAdapter;
-    private List<String> favoriteMovies = new ArrayList<>();
+    private String userId;
     private TextView tvUsername;
+    private TextView tvEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         userId = mAuth.getCurrentUser().getUid();
 
-        // Find views
         tvUsername = findViewById(R.id.tvUsername);
-        TextView tvEmail = findViewById(R.id.tvEmail);
-        View menuPengaturan = findViewById(R.id.menuPengaturan);
-        View menuFilmSaya = findViewById(R.id.menuFilmSaya);
-        View menuLogout = findViewById(R.id.menuLogout);
-        RecyclerView recyclerViewFavorites = findViewById(R.id.recyclerViewFavorites);
+        tvEmail = findViewById(R.id.tvEmail);
 
-        // Setup RecyclerView for favorites
-        recyclerViewFavorites.setLayoutManager(new LinearLayoutManager(this));
-        profileAdapter = new ProfileAdapter(favoriteMovies);
-        recyclerViewFavorites.setAdapter(profileAdapter);
+        findViewById(R.id.home).setOnClickListener(this);
+        findViewById(R.id.film).setOnClickListener(this);
+        findViewById(R.id.bioskop).setOnClickListener(this);
+        findViewById(R.id.profile).setOnClickListener(this);
 
-        // Set click listeners
-        menuPengaturan.setOnClickListener(v -> {
-            Toast.makeText(this, "Menu Pengaturan", Toast.LENGTH_SHORT).show();
+        findViewById(R.id.menuFilmFavorit).setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoriteMoviesActivity.class));
+            overridePendingTransition(0, 0);
         });
 
-        menuFilmSaya.setOnClickListener(v -> {
-            toggleFavoritesVisibility(recyclerViewFavorites);
+        findViewById(R.id.menuBioskopStar).setOnClickListener(v -> {
+            startActivity(new Intent(this, StarredCinemaActivity.class));
+            overridePendingTransition(0, 0);
         });
 
-        menuLogout.setOnClickListener(v -> logoutUser());
+        findViewById(R.id.btnLogout).setOnClickListener(v -> logoutUser());
 
-        // Set click listener for username to enable editing
         tvUsername.setOnClickListener(v -> showEditUsernameDialog());
 
-        // Load user data
-        loadUserData(tvEmail);
-
-        // Load favorite movies
-        loadFavoriteMovies();
+        loadUserData();
     }
 
     private void showEditUsernameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
         builder.setTitle("Edit Username");
 
-        // Set up the input
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_edit_username, null);
         final EditText input = viewInflated.findViewById(R.id.etUsername);
         input.setText(tvUsername.getText().toString());
 
         builder.setView(viewInflated);
 
-        // Set up the buttons
         builder.setPositiveButton("Save", (dialog, which) -> {
             String newUsername = input.getText().toString().trim();
             if (!newUsername.isEmpty()) {
@@ -110,50 +99,41 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     tvUsername.setText(newUsername);
                     Toast.makeText(this, "Username updated successfully", Toast.LENGTH_SHORT).show();
 
-                    // Broadcast update to refresh other activities
-                    sendBroadcast(new Intent("USERNAME_UPDATED"));
+                    Intent intent = new Intent("USERNAME_UPDATED");
+                    intent.putExtra("newUsername", newUsername);
+                    sendBroadcast(intent);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to update username", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed to update username: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
-    private void toggleFavoritesVisibility(RecyclerView recyclerViewFavorites) {
-        if (favoriteMovies.isEmpty()) {
-            Toast.makeText(this, "You don't have any favorite cinemas yet", Toast.LENGTH_SHORT).show();
-        } else {
-            recyclerViewFavorites.setVisibility(
-                    recyclerViewFavorites.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE
-            );
-        }
-    }
-
-    private void loadUserData(TextView tvEmail) {
+    private void loadUserData() {
         db.collection("users").document(userId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
+                    if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
+                        if (document != null && document.exists()) {
                             String username = document.getString("username");
                             String email = document.getString("email");
 
                             tvUsername.setText(username != null ? username : "No Username");
                             tvEmail.setText(email != null ? email : mAuth.getCurrentUser().getEmail());
                         } else {
-                            // Create user document if doesn't exist
-                            createUserDocument(tvEmail);
+                            createUserDocument();
                         }
                     } else {
-                        Toast.makeText(this, "Failed to load user data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Failed to load user data: " + task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void createUserDocument(TextView tvEmail) {
+    private void createUserDocument() {
         Map<String, Object> user = new HashMap<>();
         user.put("email", mAuth.getCurrentUser().getEmail());
-        user.put("username", "User" + System.currentTimeMillis() % 1000); // Default username
+        user.put("username", "User" + System.currentTimeMillis() % 1000);
 
         db.collection("users").document(userId)
                 .set(user)
@@ -162,30 +142,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     tvEmail.setText(user.get("email").toString());
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to create user profile", Toast.LENGTH_SHORT).show();
-                });
-    }
-
-    private void loadFavoriteMovies() {
-        db.collection("users").document(userId).collection("favorites")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        favoriteMovies.clear();
-                        for (DocumentSnapshot document : task.getResult()) {
-                            db.collection("cinemas").document(document.getId())
-                                    .get()
-                                    .addOnSuccessListener(cinemaDoc -> {
-                                        if (cinemaDoc.exists()) {
-                                            String cinemaName = cinemaDoc.getString("nama");
-                                            if (cinemaName != null) {
-                                                favoriteMovies.add(cinemaName);
-                                                profileAdapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
+                    Toast.makeText(this, "Failed to create user profile: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -200,19 +158,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        Intent intent = null;
+
         if (id == R.id.home) {
-            startActivity(new Intent(this, HomeActivity.class));
+            intent = new Intent(this, HomeActivity.class);
+        }
+        else if (id == R.id.film) {
+            intent = new Intent(this, FilmActivity.class);
+        }
+        else if (id == R.id.bioskop) {
+            intent = new Intent(this, BioskopActivity.class);
+        }
+        else if (id == R.id.profile) {
+            Toast.makeText(this, "Anda sedang di halaman Profile.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (intent != null) {
+            intent.putExtra("USERNAME", tvUsername.getText().toString());
+            intent.putExtra("EMAIL", tvEmail.getText().toString());
+            startActivity(intent);
             overridePendingTransition(0, 0);
-        } else if (id == R.id.bioskop) {
-            startActivity(new Intent(this, BioskopActivity.class));
-            overridePendingTransition(0, 0);
-        } else if (id == R.id.profile) {
-            Toast.makeText(this, "You are already on profile page", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onResume() {
+        super.onResume();
+        loadUserData();
     }
 }

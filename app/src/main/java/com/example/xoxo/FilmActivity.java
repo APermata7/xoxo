@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.xoxo.bioskop.BioskopActivity;
+import com.example.xoxo.BioskopActivity;
 import com.example.xoxo.databinding.ActivityFilmBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,23 +31,19 @@ public class FilmActivity extends AppCompatActivity implements View.OnClickListe
         binding = ActivityFilmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize FirebaseFirestore
         db = FirebaseFirestore.getInstance();
 
-        // Initialize navbar click listeners
         binding.home.setOnClickListener(this);
         binding.film.setOnClickListener(this);
         binding.bioskop.setOnClickListener(this);
         binding.profile.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
 
-        // Setup FAB for adding new film
         binding.fabAddChallenge.setOnClickListener(v -> {
             Intent intent = new Intent(FilmActivity.this, FilmFormActivity.class);
             startActivity(intent);
         });
 
-        // Setup RecyclerView
         setupRecyclerView();
         loadFilmsFromFirestore();
     }
@@ -98,7 +94,7 @@ public class FilmActivity extends AppCompatActivity implements View.OnClickListe
             overridePendingTransition(0, 0);
             finish();
         } else if (id == R.id.film) {
-            Toast.makeText(this, "Anda sedang di halaman film.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Anda sedang di halaman Film.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.bioskop) {
             startActivity(new Intent(this, BioskopActivity.class));
             overridePendingTransition(0, 0);
@@ -136,7 +132,7 @@ public class FilmActivity extends AppCompatActivity implements View.OnClickListe
                 .addOnSuccessListener(aVoid -> {
                     binding.progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Film berhasil dihapus", Toast.LENGTH_SHORT).show();
-                    loadFilmsFromFirestore(); // Refresh the list
+                    loadFilmsFromFirestore();
                 })
                 .addOnFailureListener(e -> {
                     binding.progressBar.setVisibility(View.GONE);
@@ -147,6 +143,6 @@ public class FilmActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        loadFilmsFromFirestore(); // Refresh data when returning from form activity
+        loadFilmsFromFirestore();
     }
 }

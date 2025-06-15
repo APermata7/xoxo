@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Header with logo and profile -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,18 +58,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- Welcome message -->
-                <TextView
-                    android:id="@+id/tvWelcome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginBottom="15dp" />
-
                 <TextView
                     android:id="@+id/tvUsername"
                     android:layout_width="match_parent"
@@ -78,13 +65,13 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="15dp" />
+                    android:layout_marginBottom="15dp"
+                    tools:text="user" />
 
             </LinearLayout>
 
-            <!-- Films section -->
             <TextView
                 android:id="@+id/tvFilm"
                 android:layout_width="match_parent"
@@ -103,7 +90,6 @@
                 android:layout_marginTop="12dp"
                 android:paddingBottom="30dp" />
 
-            <!-- Favorites section -->
             <TextView
                 android:id="@+id/tvFavorite"
                 android:layout_width="match_parent"
@@ -135,7 +121,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Gambar 1 -->
         <ImageView
             android:id="@+id/home"
             android:layout_width="100dp"
@@ -151,7 +136,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Gambar 2 -->
         <ImageView
             android:id="@+id/film"
             android:layout_width="100dp"
@@ -166,7 +150,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_film" />
 
-        <!-- Gambar 3 -->
         <ImageView
             android:id="@+id/bioskop"
             android:layout_width="100dp"
@@ -182,7 +165,6 @@
             app:layout_constraintStart_toEndOf="@+id/film"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Gambar 4 -->
         <ImageView
             android:id="@+id/profile"
             android:layout_width="100dp"

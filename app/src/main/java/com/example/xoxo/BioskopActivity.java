@@ -1,4 +1,4 @@
-package com.example.xoxo.bioskop;
+package com.example.xoxo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.xoxo.FilmActivity;
 import com.example.xoxo.HomeActivity;
 import com.example.xoxo.ProfileActivity;
-import com.example.xoxo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -468,8 +467,10 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
 
         if (id == R.id.home) {
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("USERNAME", username);
-            intent.putExtra("EMAIL", email);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        } else if (id == R.id.film) {
+            Intent intent = new Intent(this, FilmActivity.class);
             startActivity(intent);
             overridePendingTransition(0, 0);
         } else if (id == R.id.film) {
@@ -477,11 +478,9 @@ public class BioskopActivity extends AppCompatActivity implements BioskopAdapter
             startActivity(intent);
             overridePendingTransition(0, 0);
         } else if (id == R.id.bioskop) {
-            Toast.makeText(this, "Kamu sedang di halaman Bioskop", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Anda sedang di halaman Bioskop.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.profile || id == R.id.bioskop_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra("USERNAME", username);
-            intent.putExtra("EMAIL", email);
             startActivity(intent);
             overridePendingTransition(0, 0);
         }

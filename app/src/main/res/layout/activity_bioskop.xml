@@ -5,23 +5,25 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bioskop.BioskopActivity"
+    tools:context=".BioskopActivity"
     android:background="@color/black">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="20dp"
         android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white"
-        app:title="Cinemas" />
+        app:title="Cinemas"
+        app:titleTextColor="@color/white" />
 
     <ScrollView
         android:id="@+id/bioskp_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingBottom="72dp"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/navbar">
