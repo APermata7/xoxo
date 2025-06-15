@@ -46,4 +46,4 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 ####   👤 Profile:
 - 🙍‍♂️ Tampilkan informasi pengguna (username, email).
 - ⚙️ Menu pengaturan akun.
-- 🎞️ Menu film favorit saya dan biskop star saya.
+- 🎞️ Menu film favorit saya dan bioskop star saya.
