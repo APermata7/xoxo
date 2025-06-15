@@ -16,7 +16,9 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAdapter.ViewHolder> {
     private final List<Film> films;
@@ -43,7 +45,23 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
 
         holder.tvTitle.setText(film.getTitle());
         holder.tvInfo.setText(film.getInfo());
-        holder.tvPrice.setText(film.getHarga());
+
+        try {
+            String cleanHarga = film.getHarga().replaceAll("[^\\d]", "");
+            double harga = Double.parseDouble(cleanHarga);
+
+            Locale localeID = new Locale("in", "ID");
+            NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+            formatRupiah.setMaximumFractionDigits(0);
+
+            String formattedHarga = formatRupiah.format(harga)
+                    .replace(",", ".");
+
+            holder.tvPrice.setText(formattedHarga);
+        } catch (Exception e) {
+            holder.tvPrice.setText(film.getHarga());
+        }
+
         holder.tvBioskop.setText(film.getBioskop());
         holder.tvCast.setText("Pemain: " + film.getPemain());
         holder.tvDirector.setText("Sutradara: " + film.getSutradara());
