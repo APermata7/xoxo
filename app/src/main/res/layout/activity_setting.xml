@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
+            android:id="@+id/btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/back_button"
@@ -122,47 +123,6 @@
         android:layout_height="1dp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/hubungiKami"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Menu Pengaturan -->
-    <LinearLayout
-        android:id="@+id/versiApp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingVertical="25dp"
-        android:layout_marginHorizontal="20dp"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:layout_constraintTop_toBottomOf="@id/line5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Pengaturan"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_next"
-            app:tint="@color/white" />
-    </LinearLayout>
-
-    <!-- Garis -->
-    <View
-        android:id="@+id/line6"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/versiApp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
