@@ -15,6 +15,8 @@ import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.xoxo.databinding.ActivityDetailBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     private String userId;
     private Film currentFilm;
     private boolean isFavorite = false;
+    private Bitmap filmBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,9 @@ public class DetailActivity extends AppCompatActivity {
 
         setupViews();
         checkIfFavorite();
+
+        // Pre-load film image for ticket
+        loadFilmImageForTicket();
     }
 
     private Film getFilmFromIntent() {
@@ -81,6 +87,10 @@ public class DetailActivity extends AppCompatActivity {
         binding.textPemain.setText("Pemain: " + currentFilm.getPemain());
         binding.textSutradara.setText("Sutradara: " + currentFilm.getSutradara());
 
+        formatAndSetHarga();
+    }
+
+    private void formatAndSetHarga() {
         try {
             String cleanHarga = currentFilm.getHarga().replaceAll("[^\\d]", "");
             double harga = Double.parseDouble(cleanHarga);
@@ -90,6 +100,7 @@ public class DetailActivity extends AppCompatActivity {
             formatRupiah.setMaximumFractionDigits(0);
 
             String formattedHarga = formatRupiah.format(harga)
+                    .replace("Rp", "Rp ")
                     .replace(",", ".");
 
             binding.textHarga.setText(formattedHarga);
@@ -104,6 +115,18 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.drawable.placeholder_movie)
                 .error(R.drawable.error_movie)
                 .into(binding.imagePoster);
+    }
+
+    private void loadFilmImageForTicket() {
+        Glide.with(this)
+                .asBitmap()
+                .load(currentFilm.getImageUrl())
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        filmBitmap = resource;
+                    }
+                });
     }
 
     private void checkIfFavorite() {
@@ -156,15 +179,19 @@ public class DetailActivity extends AppCompatActivity {
 
     private void createAndShareTicket() {
         try {
-            Bitmap ticketBitmap = createTicketBitmap();
+            if (filmBitmap != null) {
+                Bitmap ticketBitmap = createTicketBitmap();
+                File ticketFile = saveTicketToCache(ticketBitmap);
 
-            File ticketFile = saveTicketToCache(ticketBitmap);
-
-            if (ticketFile != null) {
-                shareTicket(ticketFile);
-                showToast("Tiket berhasil dibuat");
+                if (ticketFile != null) {
+                    shareTicket(ticketFile);
+                    showToast("Tiket berhasil dibuat");
+                } else {
+                    showToast("Gagal menyimpan tiket");
+                }
             } else {
-                showToast("Gagal menyimpan tiket");
+                showToast("Sedang memuat gambar film...");
+                loadFilmImageForTicket();
             }
         } catch (Exception e) {
             showToast("Error: " + e.getMessage());
@@ -172,45 +199,177 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
+    }
     private Bitmap createTicketBitmap() {
-        int width = 800;
-        int height = 1200;
+        // Convert dp to px for image dimensions
+        int imageWidthPx = dpToPx(220);
+        int imageHeightPx = dpToPx(320);
+
+        // Calculate ticket width (wider than image)
+        int width = imageWidthPx + 200; // Add padding
+        int height = 1600; // Increased height to accommodate all elements
 
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
+        // Draw white background
         canvas.drawColor(Color.WHITE);
 
         Paint paint = new Paint();
 
-        paint.setColor(Color.parseColor("#00000000"));
+        // Draw "TIKET BIOSKOP" in black
+        paint.setColor(Color.BLACK);
         paint.setTextSize(50f);
         paint.setFakeBoldText(true);
-        canvas.drawText("TIKET BIOSKOP", 50, 100, paint);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("XOXO - TIKET BIOSKOP", 50, 100, paint);
 
+        // Draw line separator
         paint.setStrokeWidth(4f);
+        paint.setColor(Color.BLACK);
         canvas.drawLine(50, 130, width-50, 130, paint);
 
+        // Draw film image with original aspect ratio (center cropped)
+        if (filmBitmap != null) {
+            // Calculate position to center the image horizontally
+            int imageLeft = (width - imageWidthPx) / 2;
+
+            // Create a center-cropped version of the bitmap
+            Bitmap centerCropped = getCenterCroppedBitmap(filmBitmap, imageWidthPx, imageHeightPx);
+            canvas.drawBitmap(centerCropped, imageLeft, 160, paint);
+        }
+
+        // Position details below the image
+        int yPos = 160 + imageHeightPx + 40;
+
+        // Draw film details
         paint.setColor(Color.BLACK);
-        paint.setTextSize(35f);
+        paint.setTextSize(45f);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+
+        // Format harga for ticket
+        String formattedHarga = formatHargaForTicket(currentFilm.getHarga());
+
+        yPos += 40;
+        // Draw title and get the new yPos based on how many lines it took
+        yPos = drawMultilineTextAndGetY(canvas, paint, currentFilm.getTitle(), 50, yPos, width - 100);
+
+        // Add some space between title and price
+        yPos += 30;
+
+        // Draw price
         paint.setFakeBoldText(false);
+        paint.setTextSize(35f);
+        canvas.drawText(formattedHarga, 50, yPos, paint);
 
-        int yPos = 200;
-        canvas.drawText("Judul: " + currentFilm.getTitle(), 50, yPos, paint);
+        // Add space before info
         yPos += 50;
-        canvas.drawText("Harga: Rp " + currentFilm.getHarga(), 50, yPos, paint);
-        yPos += 50;
-        canvas.drawText("Info: " + currentFilm.getInfo(), 50, yPos, paint);
-        yPos += 50;
-        canvas.drawText("Pemain: " + currentFilm.getPemain(), 50, yPos, paint);
-        yPos += 50;
-        canvas.drawText("Sutradara: " + currentFilm.getSutradara(), 50, yPos, paint);
 
-        paint.setColor(Color.parseColor("#00000000"));
+        paint.setTextSize(25f);
+        // Draw info
+        yPos = drawMultilineTextAndGetY(canvas, paint, currentFilm.getInfo(), 50, yPos, width - 100);
+
+        // Thank you message
+        paint.setColor(Color.BLACK);
         paint.setTextSize(30f);
         canvas.drawText("Terima kasih telah memesan!", 50, height-100, paint);
 
         return bitmap;
+    }
+
+    // New method that returns the new Y position after drawing multiline text
+    private int drawMultilineTextAndGetY(Canvas canvas, Paint paint, String text, float x, float y, float maxWidth) {
+        String[] words = text.split(" ");
+        StringBuilder currentLine = new StringBuilder();
+        float lineHeight = paint.descent() - paint.ascent();
+
+        for (String word : words) {
+            String testLine = currentLine.toString().isEmpty() ? word : currentLine + " " + word;
+            float testWidth = paint.measureText(testLine);
+
+            if (testWidth > maxWidth) {
+                // Draw the current line and move to next line
+                canvas.drawText(currentLine.toString(), x, y, paint);
+                y += lineHeight;
+                currentLine = new StringBuilder(word);
+            } else {
+                currentLine = new StringBuilder(testLine);
+            }
+        }
+
+        // Draw the last line
+        if (!currentLine.toString().isEmpty()) {
+            canvas.drawText(currentLine.toString(), x, y, paint);
+        }
+
+        // Return the new Y position (current y + one more line height)
+        return (int) (y + lineHeight);
+    }
+
+    private Bitmap getCenterCroppedBitmap(Bitmap source, int newWidth, int newHeight) {
+        float sourceRatio = (float) source.getWidth() / source.getHeight();
+        float targetRatio = (float) newWidth / newHeight;
+
+        int x = 0, y = 0;
+        int cropWidth = source.getWidth();
+        int cropHeight = source.getHeight();
+
+        if (sourceRatio > targetRatio) {
+            // Source is wider - crop horizontally
+            cropWidth = (int) (source.getHeight() * targetRatio);
+            x = (source.getWidth() - cropWidth) / 2;
+        } else {
+            // Source is taller - crop vertically
+            cropHeight = (int) (source.getWidth() / targetRatio);
+            y = (source.getHeight() - cropHeight) / 2;
+        }
+
+        Bitmap cropped = Bitmap.createBitmap(source, x, y, cropWidth, cropHeight);
+        return Bitmap.createScaledBitmap(cropped, newWidth, newHeight, true);
+    }
+
+    private String formatHargaForTicket(String harga) {
+        try {
+            String cleanHarga = harga.replaceAll("[^\\d]", "");
+            double hargaValue = Double.parseDouble(cleanHarga);
+
+            Locale localeID = new Locale("in", "ID");
+            NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+            formatRupiah.setMaximumFractionDigits(0);
+
+            return formatRupiah.format(hargaValue)
+                    .replace(",", ".");
+        } catch (Exception e) {
+            return harga;
+        }
+    }
+
+    private void drawMultilineText(Canvas canvas, Paint paint, String text, float x, float y, float maxWidth) {
+        String[] words = text.split(" ");
+        StringBuilder currentLine = new StringBuilder();
+        float lineHeight = paint.descent() - paint.ascent();
+
+        for (String word : words) {
+            String testLine = currentLine.toString().isEmpty() ? word : currentLine + " " + word;
+            float testWidth = paint.measureText(testLine);
+
+            if (testWidth > maxWidth) {
+                // Draw the current line and move to next line
+                canvas.drawText(currentLine.toString(), x, y, paint);
+                y += lineHeight;
+                currentLine = new StringBuilder(word);
+            } else {
+                currentLine = new StringBuilder(testLine);
+            }
+        }
+
+        // Draw the last line
+        if (!currentLine.toString().isEmpty()) {
+            canvas.drawText(currentLine.toString(), x, y, paint);
+        }
     }
 
     private File saveTicketToCache(Bitmap bitmap) throws IOException {
@@ -268,7 +427,7 @@ public class DetailActivity extends AppCompatActivity {
                 "Sinopsis: " + currentFilm.getDesc() + "\n\n" +
                 "Pemain: " + currentFilm.getPemain() + "\n\n" +
                 "Sutradara: " + currentFilm.getSutradara() + "\n\n" +
-                "Harga tiket: Rp " + currentFilm.getHarga();
+                "Harga tiket: " + formatHargaForTicket(currentFilm.getHarga());
     }
 
     private void showToast(String message) {
