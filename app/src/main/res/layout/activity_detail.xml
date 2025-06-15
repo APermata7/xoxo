@@ -63,13 +63,18 @@
 
             <ImageView
                 android:id="@+id/imagePoster"
-                android:layout_width="350dp"
-                android:layout_height="200dp"
+                android:layout_width="220dp"
+                android:layout_height="320dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:background="@drawable/placeholder_movie"
                 android:contentDescription="Movie poster"
                 app:srcCompat="@drawable/placeholder_movie" />
+
 
             <TextView
                 android:id="@+id/textHarga"
@@ -80,7 +85,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="12dp"/>
 
             <TextView
                 android:id="@+id/textInfo"
