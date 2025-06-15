@@ -1,7 +1,9 @@
 package com.example.xoxo;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +15,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHolder> {
+import android.view.MenuItem;
+import android.widget.PopupMenu;
 
+import com.bumptech.glide.Glide;
+
+public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHolder> {
+    private static final String TAG = "BioskopAdapter";
     private List<Bioskop> bioskopList;
     private Context context;
-    private BioskopFavoriteListener favoriteListener;
+    private BioskopListener listener;
+    private boolean canEdit;
+    private boolean isClickable = true;
 
-    public interface BioskopFavoriteListener {
+    public interface BioskopListener {
         void onFavoriteChanged(Bioskop bioskop, boolean isFavorite);
+        void onEditCinema(Bioskop bioskop);
+        void onDeleteCinema(Bioskop bioskop);
+        void onItemClick(Bioskop bioskop);
     }
 
-    public BioskopAdapter(List<Bioskop> bioskopList, BioskopFavoriteListener listener) {
+    public BioskopAdapter(List<Bioskop> bioskopList, BioskopListener listener, boolean canEdit) {
         this.bioskopList = bioskopList;
-        this.favoriteListener = listener;
+        this.listener = listener;
+        this.canEdit = canEdit;
     }
 
     @NonNull
@@ -41,27 +54,88 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
         Bioskop bioskop = bioskopList.get(position);
         holder.nama.setText(bioskop.getNama());
 
-        // Set the correct star icon based on favorite status
+        if (bioskop.getImageUrl() != null && !bioskop.getImageUrl().isEmpty()) {
+            holder.image.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(bioskop.getImageUrl())
+                    .placeholder(R.drawable.ic_cinema_placeholder)
+                    .error(R.drawable.ic_cinema_placeholder)
+                    .into(holder.image);
+        } else {
+            holder.image.setVisibility(View.GONE);
+        }
+
         updateFavoriteIcon(holder.favorite, bioskop.isFavorite());
 
-        // Handle favorite button click
-        holder.favorite.setOnClickListener(v -> {
-            bioskop.setFavorite(!bioskop.isFavorite());
-            updateFavoriteIcon(holder.favorite, bioskop.isFavorite());
-
-            // Notify listener
-            if (favoriteListener != null) {
-                favoriteListener.onFavoriteChanged(bioskop, bioskop.isFavorite());
+        holder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Favorite button clicked for: " + bioskop.getNama());
+                boolean newFavoriteStatus = !bioskop.isFavorite();
+                if (listener != null) {
+                    listener.onFavoriteChanged(bioskop, newFavoriteStatus);
+                }
             }
         });
 
-        // Handle item click to navigate to detail screen
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, BioskopDetailActivity.class);
-            intent.putExtra("CINEMA_NAME", bioskop.getNama());
-            intent.putExtra("IS_FAVORITE", bioskop.isFavorite());
-            context.startActivity(intent);
+        holder.btnMore.setVisibility(canEdit ? View.VISIBLE : View.GONE);
+
+        holder.btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "More button clicked for: " + bioskop.getNama());
+                if (canEdit) {
+                    showPopupMenu(v, bioskop);
+                }
+            }
         });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isClickable) return;
+
+                isClickable = false;
+                Log.d(TAG, "Cinema item clicked: " + bioskop.getNama());
+
+                if (listener != null) {
+                    listener.onItemClick(bioskop);
+                }
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isClickable = true;
+                    }
+                }, 500);
+            }
+        });
+    }
+
+    private void showPopupMenu(View view, Bioskop bioskop) {
+        PopupMenu popup = new PopupMenu(context, view);
+        popup.inflate(R.menu.menu_cinema_options);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.action_edit) {
+                    Log.d(TAG, "Edit menu selected for: " + bioskop.getNama());
+                    if (listener != null) {
+                        listener.onEditCinema(bioskop);
+                    }
+                    return true;
+                } else if (id == R.id.action_delete) {
+                    Log.d(TAG, "Delete menu selected for: " + bioskop.getNama());
+                    if (listener != null) {
+                        listener.onDeleteCinema(bioskop);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     private void updateFavoriteIcon(ImageView imageView, boolean isFavorite) {
@@ -74,14 +148,21 @@ public class BioskopAdapter extends RecyclerView.Adapter<BioskopAdapter.ViewHold
         return bioskopList.size();
     }
 
+    public void updateData(List<Bioskop> newBioskopList) {
+        bioskopList = newBioskopList;
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nama;
-        ImageView favorite;
+        ImageView favorite, image, btnMore;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nama = itemView.findViewById(R.id.tvNamaBioskop);
             favorite = itemView.findViewById(R.id.btnFavorite);
+            image = itemView.findViewById(R.id.imgCinema);
+            btnMore = itemView.findViewById(R.id.btnMore);
         }
     }
 }

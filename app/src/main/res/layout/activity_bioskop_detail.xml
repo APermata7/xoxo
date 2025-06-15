@@ -7,47 +7,80 @@
     tools:context=".BioskopDetailActivity"
     android:background="@color/black">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:titleTextColor="@color/white" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Header -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Cinema Image -->
+            <ImageView
+                android:id="@+id/imgCinema"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:src="@drawable/ic_cinema_placeholder"/>
+
+            <!-- Cinema Name -->
+            <TextView
+                android:id="@+id/tvCinemaName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="18dp">
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:padding="16dp"
+                tools:text="Cinema XXI Malang" />
 
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_back"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvCinemaName"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvCinemaName"
-                    android:clickable="true"
-                    android:focusable="true"/>
+            <!-- Favorite Button -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
 
-                <TextView
-                    android:id="@+id/tvCinemaName"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Cinema Name"
-                    app:layout_constraintStart_toEndOf="@+id/btnBack"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/btnFavoriteDetail"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_star"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Favorite"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- Cinema Information -->
             <androidx.cardview.widget.CardView
@@ -64,57 +97,52 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <LinearLayout
+                    <!-- Address Section -->
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/white"
-                            app:cardCornerRadius="8dp"
-                            app:cardElevation="0dp"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:id="@+id/btnFavoriteDetail"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_star"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginVertical="5dp"
-                                android:layout_gravity="center_vertical"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Favorite"
-                                android:textColor="@color/black"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="35dp"
-                                android:layout_marginEnd="10dp"/>
-
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
+                        android:text="Address"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tvCinemaAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Jalan Veteran no. 8, Malang Town Square, Lantai Upper Ground, Unit UG-03."
-                        android:textColor="@color/white"/>
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/white"
+                        tools:text="Jalan Veteran no. 8, Malang Town Square, Lantai Upper Ground, Unit UG-03."/>
 
-                    <TextView
-                        android:id="@+id/tvCinemaDescription"
+                    <!-- Phone Section -->
+                    <LinearLayout
+                        android:id="@+id/layoutPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Telp : "
+                        android:orientation="vertical"
+                        android:layout_marginTop="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Phone"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tvCinemaPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@color/white"
+                            tools:text="+628XXXXX"/>
+                    </LinearLayout>
+
+                    <!-- Info Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Additional Information"
                         android:textColor="@color/white"
                         android:textStyle="bold"/>
 
@@ -123,8 +151,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="+628XXXXX"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        tools:text="Open daily from 10:00 AM to 10:00 PM. This cinema has 5 studios with capacity ranging from 100-200 seats."/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

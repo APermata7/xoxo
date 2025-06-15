@@ -3,145 +3,206 @@ package com.example.xoxo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.xoxo.databinding.ActivityHomeBinding;
+
+import com.bumptech.glide.Glide;
+import com.example.xoxo.BioskopActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements
         HomeAdapter.OnFavoriteChangeListener,
         HomeAdapter.OnFilmClickListener {
 
-    private ActivityHomeBinding binding;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private HomeAdapter filmAdapter, favoriteAdapter;
     private List<Film> allFilms = new ArrayList<>();
     private List<Film> favoriteFilms = new ArrayList<>();
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_home);
 
-        // Inisialisasi view menggunakan binding
+        // Initialize Firebase
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getCurrentUser().getUid();
+
         initializeViews();
         setupClickListeners();
         setupRecyclerViews();
-        loadDummyData();
-
-        // Restore state jika ada
-        if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
-        }
-
-        String username = getIntent().getStringExtra("USERNAME");
-        String welcomeMessage = getString(R.string.welcome_message, username);
-        binding.tvUsername.setText(welcomeMessage);
+        loadUserData();
+        loadFilmsFromFirestore();
     }
 
     private void initializeViews() {
-        // Tidak perlu findViewById karena menggunakan ViewBinding
-        binding.rvFilm.setLayoutManager(new LinearLayoutManager(this));
-        binding.rvFavorite.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView rvFilm = findViewById(R.id.rvFilm);
+        RecyclerView rvFavorite = findViewById(R.id.rvFavorite);
+
+        // Horizontal layout for films
+        LinearLayoutManager filmLayoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false);
+        rvFilm.setLayoutManager(filmLayoutManager);
+
+        // Vertical layout for favorites
+        rvFavorite.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setupClickListeners() {
-        binding.home.setOnClickListener(this::handleClick);
-        binding.bioskop.setOnClickListener(this::handleClick);
-        binding.profile.setOnClickListener(this::handleClick);
-        binding.ivProfile.setOnClickListener(this::handleClick);
+        findViewById(R.id.home).setOnClickListener(this::handleClick);
+        findViewById(R.id.film).setOnClickListener(this::handleClick);
+        findViewById(R.id.bioskop).setOnClickListener(this::handleClick);
+        findViewById(R.id.profile).setOnClickListener(this::handleClick);
+        findViewById(R.id.ivProfile).setOnClickListener(this::handleClick);
     }
 
     private void setupRecyclerViews() {
         filmAdapter = new HomeAdapter(allFilms, false, this, this);
         favoriteAdapter = new HomeAdapter(favoriteFilms, true, this, this);
-        binding.rvFilm.setAdapter(filmAdapter);
-        binding.rvFavorite.setAdapter(favoriteAdapter);
+
+        ((RecyclerView) findViewById(R.id.rvFilm)).setAdapter(filmAdapter);
+        ((RecyclerView) findViewById(R.id.rvFavorite)).setAdapter(favoriteAdapter);
     }
 
-    private void loadDummyData() {
-        allFilms.clear();
-        allFilms.add(new Film(1, "The Girl From the Other Side", "CINEPOLIS MATOS", "Rp100.000", R.drawable.film1));
-        allFilms.add(new Film(2, "Kiki's Delivery Service", "CGV CINEMAS", "Rp120.000", R.drawable.film2));
-        allFilms.add(new Film(3, "My Neighbor Totoro", "XXI THEATER", "Rp110.000", R.drawable.film3));
-        allFilms.add(new Film(4, "Spirited Away", "XXI TRANSMART", "Rp130.000", R.drawable.film4));
+    private void loadUserData() {
+        db.collection("users").document(userId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            String username = document.getString("username");
+                            if (username != null) {
+                                String welcomeMessage = "Welcome, " + username + "!";
+                                ((TextView) findViewById(R.id.tvUsername)).setText(welcomeMessage);
+                            }
+                        }
+                    }
+                });
+    }
 
+    private void loadFilmsFromFirestore() {
+        db.collection("films")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        allFilms.clear();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Film film = document.toObject(Film.class);
+                            film.setId(document.getId());
+                            allFilms.add(film);
+                        }
+
+                        loadFavoriteFilms();
+                    } else {
+                        Toast.makeText(this, "Failed to load films", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void loadFavoriteFilms() {
+        db.collection("users").document(userId).collection("favorites")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        favoriteFilms.clear();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String filmId = document.getId();
+                            for (Film film : allFilms) {
+                                if (film.getId().equals(filmId)) {
+                                    film.setFavorite(true);
+                                    favoriteFilms.add(film);
+                                    break;
+                                }
+                            }
+                        }
+
+                        updateAdapters();
+                    }
+                });
+    }
+
+    private void updateAdapters() {
         filmAdapter.updateFilms(allFilms);
-    }
-
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        // Restore favorite films
-        List<Film> savedFavorites = (ArrayList<Film>) savedInstanceState.getSerializable("favorite_films");
-        if (savedFavorites != null) {
-            favoriteFilms.clear();
-            favoriteFilms.addAll(savedFavorites);
-        }
-
-        // Restore favorite status for all films
-        for (Film film : allFilms) {
-            boolean isFavorite = savedInstanceState.getBoolean("film_" + film.getId(), false);
-            film.setFavorite(isFavorite);
-        }
-
         favoriteAdapter.updateFilms(favoriteFilms);
+
+        // Show/hide favorites section based on content
+        findViewById(R.id.tvFavorite).setVisibility(
+                favoriteFilms.isEmpty() ? View.GONE : View.VISIBLE
+        );
     }
 
     @Override
     public void onFavoriteChanged(Film film, boolean isFavorite) {
-        runOnUiThread(() -> {
-            film.setFavorite(isFavorite);
+        film.setFavorite(isFavorite);
 
-            if (isFavorite) {
-                if (!favoriteFilms.contains(film)) {
-                    favoriteFilms.add(film);
-                }
-            } else {
-                favoriteFilms.remove(film);
-            }
-
-            favoriteAdapter.updateFilms(favoriteFilms);
-            filmAdapter.updateFilms(allFilms);
-        });
+        if (isFavorite) {
+            // Add to favorites in Firestore
+            db.collection("users").document(userId).collection("favorites")
+                    .document(film.getId())
+                    .set(new HashMap<>())
+                    .addOnSuccessListener(aVoid -> {
+                        if (!favoriteFilms.contains(film)) {
+                            favoriteFilms.add(film);
+                            updateAdapters();
+                        }
+                    });
+        } else {
+            // Remove from favorites in Firestore
+            db.collection("users").document(userId).collection("favorites")
+                    .document(film.getId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        favoriteFilms.remove(film);
+                        updateAdapters();
+                    });
+        }
     }
 
     @Override
     public void onFilmClicked(Film film) {
-        // Intent ke detail film
-//        Intent intent = new Intent(this, FilmDetailActivity.class);
-//        intent.putExtra("film_id", film.getId());
-//        intent.putExtra("film_title", film.getTitle());
-//        intent.putExtra("film_bioskop", film.getBioskop());
-//        intent.putExtra("film_harga", film.getHarga());
-//        intent.putExtra("film_image", film.getImageRes());
-//        startActivity(intent);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("film_id", film.getId());
+        intent.putExtra("film_title", film.getTitle());
+        intent.putExtra("film_bioskop", film.getBioskop());
+        intent.putExtra("film_harga", film.getHarga());
+        intent.putExtra("film_image_url", film.getImageUrl());
+        intent.putExtra("film_desc", film.getDesc());
+        intent.putExtra("film_info", film.getInfo());
+        intent.putExtra("film_pemain", film.getPemain());
+        intent.putExtra("film_sutradara", film.getSutradara());
+        startActivity(intent);
     }
 
     private void handleClick(View view) {
         int id = view.getId();
         if (id == R.id.home) {
-            Toast.makeText(this, "Anda sudah di home.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You're already on home", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.film) {
+            startActivity(new Intent(this, FilmActivity.class));
+            overridePendingTransition(0, 0);
         } else if (id == R.id.bioskop) {
-            Toast.makeText(this, "Halaman belum ada", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, BioskopActivity.class));
+            overridePendingTransition(0, 0);
         } else if (id == R.id.profile || id == R.id.ivProfile) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra("USERNAME", getIntent().getStringExtra("USERNAME"));
-            intent.putExtra("EMAIL", getIntent().getStringExtra("EMAIL"));
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("favorite_films", new ArrayList<>(favoriteFilms));
-
-        for (Film film : allFilms) {
-            outState.putBoolean("film_" + film.getId(), film.isFavorite());
+            startActivity(new Intent(this, ProfileActivity.class));
+            overridePendingTransition(0, 0);
         }
     }
 }

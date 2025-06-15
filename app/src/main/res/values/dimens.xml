@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="film_card_width">160dp</dimen>
+    <dimen name="film_image_height">240dp</dimen>
+    <dimen name="film_image_corner_radius">8dp</dimen>
+</resources>
