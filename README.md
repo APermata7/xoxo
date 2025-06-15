@@ -1,12 +1,9 @@
-# 🎬 XOXO - List Film & Bioskop
+![Image](https://github.com/user-attachments/assets/c6188038-3a9c-4d3b-b849-79343ed81007)
+
+### 🎬 XOXO - List Film & Bioskop
 Helping movie lovers explore films and cinemas with ease
 
 ***
-
-
-
-![Image](https://github.com/user-attachments/assets/c6188038-3a9c-4d3b-b849-79343ed81007)
-
 
 ### 📌 Tentang Aplikasi 
 Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan pengalaman menonton mereka dengan lebih mudah dan efisien. Aplikasi ini menyediakan informasi lengkap mengenai detail film, serta lokasi bioskop yang menayangkan film tersebut. Pengguna juga dapat menyimpan film-film pilihan ke dalam daftar favorit, sehingga lebih mudah dalam memantau jadwal tayang maupun merencanakan waktu menonton.
