@@ -268,9 +268,15 @@ public class DetailActivity extends AppCompatActivity {
         paint.setFakeBoldText(false);
         yPos = drawMultilineTextAndGetY(canvas, paint, currentFilm.getInfo(), 50, yPos, width - 100);
 
+        int thankYouPosY = height - 100;
+        int linePadding = 50;
+        paint.setStrokeWidth(3f);
+        paint.setColor(Color.BLACK);
+        canvas.drawLine(50, thankYouPosY - linePadding, width-50, thankYouPosY - linePadding, paint);
+
         paint.setTextSize(30f);
         paint.setFakeBoldText(true);
-        canvas.drawText("Terima kasih telah memesan!", 50, height-100, paint);
+        canvas.drawText("Terima kasih telah memesan!", 50, thankYouPosY, paint);
 
         return bitmap;
     }
@@ -279,7 +285,6 @@ public class DetailActivity extends AppCompatActivity {
         String[] words = text.split(" ");
         StringBuilder currentLine = new StringBuilder();
         float lineHeight = paint.descent() - paint.ascent();
-
         for (String word : words) {
             String testLine = currentLine.toString().isEmpty() ? word : currentLine + " " + word;
             float testWidth = paint.measureText(testLine);
@@ -355,7 +360,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-        // Draw the last line
         if (!currentLine.toString().isEmpty()) {
             canvas.drawText(currentLine.toString(), x, y, paint);
         }
