@@ -79,7 +79,7 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
-                android:id="@+id/labelEmal"
+                android:id="@+id/labelEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Email"
@@ -102,7 +102,7 @@
                 android:padding="12dp"
                 android:text=""
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/labelEmal"
+                app:layout_constraintTop_toBottomOf="@id/labelEmail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -184,7 +184,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Bioskop Star"
+                    android:text="Bioskop Favorit"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="18sp" />
@@ -206,6 +206,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Menu Pengaturan -->
+            <LinearLayout
+                android:id="@+id/menuPengaturan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="25dp"
+                android:layout_marginHorizontal="20dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintTop_toBottomOf="@id/line5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pengaturan"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_next"
+                    app:tint="@color/white" />
+            </LinearLayout>
+
+            <!-- Garis -->
+            <View
+                android:id="@+id/line6"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/menuPengaturan"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <!-- Tombol Logout -->
             <Button
                 android:id="@+id/btnLogout"
@@ -219,13 +260,12 @@
                 android:layout_marginHorizontal="20dp"
                 android:padding="12dp"
                 app:cornerRadius="12dp"
-                app:layout_constraintTop_toBottomOf="@id/line5"
+                app:layout_constraintTop_toBottomOf="@id/line6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navbar"
