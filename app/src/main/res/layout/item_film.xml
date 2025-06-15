@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Movie poster image -->
         <ImageView
             android:id="@+id/filmImage"
             android:layout_width="250dp"
@@ -26,7 +25,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Movie title -->
         <TextView
             android:id="@+id/filmTitle"
             android:layout_width="0dp"
@@ -60,7 +58,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/filmTitle" />
 
-        <!-- Price -->
         <TextView
             android:id="@+id/filmHarga"
             android:layout_width="wrap_content"

@@ -49,7 +49,6 @@ public class Film implements Serializable {
         this.sutradara = sutradara;
     }
 
-    // Getters and setters for all fields
     @Exclude
     public String getId() {
         return id;

@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth = FirebaseAuth.getInstance();
 
-        // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -87,9 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void signInWithGoogle() {
-        // Option 1: Sign out terlebih dahulu (paling bersih)
         googleSignInClient.signOut().addOnCompleteListener(this, task -> {
-            // Option 2: Juga revoke akses (opsional)
             googleSignInClient.revokeAccess().addOnCompleteListener(this, task2 -> {
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -104,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null && account.getIdToken() != null) {
                     firebaseAuthWithGoogle(account.getIdToken());
@@ -123,12 +119,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         navigateToHome();
                     } else {
-                        // Sign in fails
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                         Toast.makeText(this, "Authentication failed: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"), Toast.LENGTH_SHORT).show();
                     }

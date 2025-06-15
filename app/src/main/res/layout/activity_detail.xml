@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Header -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +50,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Movie Title -->
             <TextView
                 android:id="@+id/textJudul"
                 android:layout_width="match_parent"
@@ -63,7 +61,6 @@
                 android:gravity="center"
                 android:layout_marginTop="30dp"/>
 
-            <!-- Poster -->
             <ImageView
                 android:id="@+id/imagePoster"
                 android:layout_width="350dp"
@@ -74,7 +71,6 @@
                 android:contentDescription="Movie poster"
                 app:srcCompat="@drawable/placeholder_movie" />
 
-            <!-- Price -->
             <TextView
                 android:id="@+id/textHarga"
                 android:layout_width="match_parent"
@@ -86,7 +82,6 @@
                 android:gravity="center"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Info -->
             <TextView
                 android:id="@+id/textInfo"
                 android:layout_width="match_parent"
@@ -98,7 +93,6 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@android:color/white"/>
 
-            <!-- Description -->
             <TextView
                 android:id="@+id/textDeskripsi"
                 android:layout_width="match_parent"
@@ -108,7 +102,6 @@
                 android:textSize="13sp"
                 android:text="Lorem ipsum dolor sit amet..."/>
 
-            <!-- Cast and Director -->
             <TextView
                 android:id="@+id/textPemain"
                 android:layout_width="match_parent"
@@ -129,7 +122,6 @@
                 android:paddingTop="4dp"
                 android:textStyle="bold"/>
 
-            <!-- Favorite and Share Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,7 +151,6 @@
                     android:scaleType="centerInside"/>
             </LinearLayout>
 
-            <!-- Download Ticket Button -->
             <Button
                 android:id="@+id/btnDownload"
                 android:layout_width="match_parent"

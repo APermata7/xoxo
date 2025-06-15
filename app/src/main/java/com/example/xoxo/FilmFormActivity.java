@@ -45,7 +45,6 @@ public class FilmFormActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Check if we're in edit mode
         if (getIntent().hasExtra("film")) {
             isEditMode = true;
             currentFilm = (Film) getIntent().getSerializableExtra("film");

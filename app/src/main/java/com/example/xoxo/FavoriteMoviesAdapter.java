@@ -41,7 +41,6 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Film film = films.get(position);
 
-        // Set movie data
         holder.tvTitle.setText(film.getTitle());
         holder.tvInfo.setText(film.getInfo());
         holder.tvPrice.setText(film.getHarga());
@@ -49,14 +48,12 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
         holder.tvCast.setText("Pemain: " + film.getPemain());
         holder.tvDirector.setText("Sutradara: " + film.getSutradara());
 
-        // Load image with Glide
         Glide.with(holder.itemView.getContext())
                 .load(film.getImageUrl())
                 .placeholder(R.drawable.placeholder_movie)
                 .error(R.drawable.error_movie)
                 .into(holder.ivPoster);
 
-        // Remove button click listener
         holder.btnRemove.setOnClickListener(v -> {
             removeFromFavorites(film.getId(), position, v.getContext());
         });

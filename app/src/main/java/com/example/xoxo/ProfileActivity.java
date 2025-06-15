@@ -30,11 +30,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Check if user is logged in
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -43,17 +41,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         userId = mAuth.getCurrentUser().getUid();
 
-        // Initialize views
         tvUsername = findViewById(R.id.tvUsername);
         tvEmail = findViewById(R.id.tvEmail);
 
-        // Set click listeners for navigation
         findViewById(R.id.home).setOnClickListener(this);
         findViewById(R.id.film).setOnClickListener(this);
         findViewById(R.id.bioskop).setOnClickListener(this);
         findViewById(R.id.profile).setOnClickListener(this);
 
-        // Set click listeners for menu items
         findViewById(R.id.menuFilmFavorit).setOnClickListener(v -> {
             startActivity(new Intent(this, FavoriteMoviesActivity.class));
             overridePendingTransition(0, 0);
@@ -66,10 +61,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         findViewById(R.id.btnLogout).setOnClickListener(v -> logoutUser());
 
-        // Enable username editing
         tvUsername.setOnClickListener(v -> showEditUsernameDialog());
 
-        // Load user data
         loadUserData();
     }
 
@@ -106,7 +99,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     tvUsername.setText(newUsername);
                     Toast.makeText(this, "Username updated successfully", Toast.LENGTH_SHORT).show();
 
-                    // Broadcast username update
                     Intent intent = new Intent("USERNAME_UPDATED");
                     intent.putExtra("newUsername", newUsername);
                     sendBroadcast(intent);
@@ -183,7 +175,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         if (intent != null) {
-            // Pass user data if needed
             intent.putExtra("USERNAME", tvUsername.getText().toString());
             intent.putExtra("EMAIL", tvEmail.getText().toString());
             startActivity(intent);
@@ -194,7 +185,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh data when returning to profile
         loadUserData();
     }
 }

@@ -152,7 +152,6 @@ public class Bioskop implements Serializable {
         this.updatedByUsername = updatedByUsername;
     }
 
-    // Clone method for editing
     public Bioskop clone() {
         Bioskop clone = new Bioskop();
         clone.id = this.id;

@@ -40,12 +40,10 @@ public class DetailActivity extends AppCompatActivity {
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
 
-        // Get film data from intent
         currentFilm = getFilmFromIntent();
 
         setupViews();
@@ -67,11 +65,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        // Set film data
         setFilmDetails();
         loadFilmImage();
 
-        // Set up button click listeners
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnFav.setOnClickListener(v -> toggleFavorite());
         binding.btnDownload.setOnClickListener(v -> createAndShareTicket());
@@ -85,7 +81,6 @@ public class DetailActivity extends AppCompatActivity {
         binding.textPemain.setText("Pemain: " + currentFilm.getPemain());
         binding.textSutradara.setText("Sutradara: " + currentFilm.getSutradara());
 
-        // Format and display price
         try {
             double price = Double.parseDouble(currentFilm.getHarga());
             NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
@@ -153,14 +148,11 @@ public class DetailActivity extends AppCompatActivity {
 
     private void createAndShareTicket() {
         try {
-            // Create ticket image
             Bitmap ticketBitmap = createTicketBitmap();
 
-            // Save to internal storage
             File ticketFile = saveTicketToCache(ticketBitmap);
 
             if (ticketFile != null) {
-                // Share the ticket
                 shareTicket(ticketFile);
                 showToast("Tiket berhasil dibuat");
             } else {
@@ -173,34 +165,29 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private Bitmap createTicketBitmap() {
-        int width = 800;  // Ticket width in pixels
-        int height = 1200; // Ticket height in pixels
+        int width = 800;
+        int height = 1200;
 
-        // Create blank bitmap
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        // Draw white background
         canvas.drawColor(Color.WHITE);
 
         Paint paint = new Paint();
 
-        // Draw header
-        paint.setColor(Color.parseColor("#FF6200EE")); // Purple color
+        paint.setColor(Color.parseColor("#FF6200EE"));
         paint.setTextSize(50f);
         paint.setFakeBoldText(true);
         canvas.drawText("TIKET BIOSKOP", 50, 100, paint);
 
-        // Draw divider line
         paint.setStrokeWidth(4f);
         canvas.drawLine(50, 130, width-50, 130, paint);
 
-        // Draw movie details
         paint.setColor(Color.BLACK);
         paint.setTextSize(35f);
         paint.setFakeBoldText(false);
 
-        int yPos = 200; // Starting Y position for text
+        int yPos = 200;
         canvas.drawText("Judul: " + currentFilm.getTitle(), 50, yPos, paint);
         yPos += 50;
         canvas.drawText("Harga: Rp " + currentFilm.getHarga(), 50, yPos, paint);
@@ -211,7 +198,6 @@ public class DetailActivity extends AppCompatActivity {
         yPos += 50;
         canvas.drawText("Sutradara: " + currentFilm.getSutradara(), 50, yPos, paint);
 
-        // Draw footer
         paint.setColor(Color.parseColor("#FF6200EE"));
         paint.setTextSize(30f);
         canvas.drawText("Terima kasih telah memesan!", 50, height-100, paint);
@@ -220,7 +206,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private File saveTicketToCache(Bitmap bitmap) throws IOException {
-        // Create tickets directory in cache if it doesn't exist
         File cacheDir = new File(getCacheDir(), "tickets");
         if (!cacheDir.exists()) {
             if (!cacheDir.mkdirs()) {
@@ -229,11 +214,9 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-        // Create unique filename
         String filename = "ticket_" + System.currentTimeMillis() + ".png";
         File file = new File(cacheDir, filename);
 
-        // Save bitmap to file
         FileOutputStream out = new FileOutputStream(file);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
         out.close();
@@ -242,7 +225,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void shareTicket(File ticketFile) {
-        // Get URI using FileProvider
         Uri ticketUri = FileProvider.getUriForFile(
                 this,
                 getPackageName() + ".provider",
@@ -276,7 +258,7 @@ public class DetailActivity extends AppCompatActivity {
         return "Saya merekomendasikan film:\n\n" +
                 currentFilm.getTitle() + "\n\n" +
                 "Sinopsis: " + currentFilm.getDesc() + "\n\n" +
-                "Pemain: " + currentFilm.getPemain() + "\n" +
+                "Pemain: " + currentFilm.getPemain() + "\n\n" +
                 "Sutradara: " + currentFilm.getSutradara() + "\n\n" +
                 "Harga tiket: Rp " + currentFilm.getHarga();
     }

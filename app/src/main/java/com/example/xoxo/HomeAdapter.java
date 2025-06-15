@@ -93,21 +93,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
             binding.filmTitle.setText(film.getTitle());
             binding.filmBioskop.setText(film.getBioskop());
             try {
-                // Bersihkan string dari karakter non-numerik
                 String cleanHarga = film.getHarga().replaceAll("[^\\d]", "");
                 double harga = Double.parseDouble(cleanHarga);
 
-                // Buat format Rupiah
                 Locale localeID = new Locale("in", "ID");
                 NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-                formatRupiah.setMaximumFractionDigits(0); // Tanpa desimal
+                formatRupiah.setMaximumFractionDigits(0);
 
                 String formattedHarga = formatRupiah.format(harga)
-                        .replace(",", ".");    // Ganti koma dengan titik
+                        .replace(",", ".");
 
                 binding.filmHarga.setText(formattedHarga);
             } catch (Exception e) {
-                // Jika parsing gagal, tampilkan harga asli
                 binding.filmHarga.setText(film.getHarga());
             }
 
