@@ -15,14 +15,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Xoxo"
         tools:targetApi="31">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
-            android:name=".bioskop.BioskopFormActivity"
+            android:name=".BioskopFormActivity"
             android:exported="false" />
         <activity
-            android:name=".bioskop.BioskopDetailActivity"
+            android:name=".BioskopDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".bioskop.BioskopActivity"
+            android:name="BioskopActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
@@ -38,6 +49,17 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FilmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FilmFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FavoriteMoviesActivity"
+            android:exported="false" />
+        <activity android:name=".StarredCinemaActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"

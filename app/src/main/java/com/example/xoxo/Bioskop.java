@@ -1,4 +1,4 @@
-package com.example.xoxo.bioskop;
+package com.example.xoxo;
 
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;

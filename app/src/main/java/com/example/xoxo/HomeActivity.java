@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.xoxo.bioskop.BioskopActivity;
+import com.example.xoxo.BioskopActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     private void setupClickListeners() {
         findViewById(R.id.home).setOnClickListener(this::handleClick);
+        findViewById(R.id.film).setOnClickListener(this::handleClick);
         findViewById(R.id.bioskop).setOnClickListener(this::handleClick);
         findViewById(R.id.profile).setOnClickListener(this::handleClick);
         findViewById(R.id.ivProfile).setOnClickListener(this::handleClick);
@@ -193,6 +194,9 @@ public class HomeActivity extends AppCompatActivity implements
         int id = view.getId();
         if (id == R.id.home) {
             Toast.makeText(this, "You're already on home", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.film) {
+            startActivity(new Intent(this, FilmActivity.class));
+            overridePendingTransition(0, 0);
         } else if (id == R.id.bioskop) {
             startActivity(new Intent(this, BioskopActivity.class));
             overridePendingTransition(0, 0);

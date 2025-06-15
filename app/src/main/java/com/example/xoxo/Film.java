@@ -3,11 +3,12 @@ package com.example.xoxo;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Film {
+public class Film implements Serializable {
     private String id;
     private String title;
     private String bioskop;
@@ -26,6 +27,18 @@ public class Film {
     public Film(String id, String title, String bioskop, String harga, String imageUrl,
                 String desc, String info, String pemain, String sutradara) {
         this.id = id;
+        this.title = title;
+        this.bioskop = bioskop;
+        this.harga = harga;
+        this.imageUrl = imageUrl;
+        this.desc = desc;
+        this.info = info;
+        this.pemain = pemain;
+        this.sutradara = sutradara;
+    }
+
+    public Film(String title, String bioskop, String harga, String imageUrl,
+                String desc, String info, String pemain, String sutradara) {
         this.title = title;
         this.bioskop = bioskop;
         this.harga = harga;

@@ -8,17 +8,6 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 
 ***
 
-## Kelompok 1 & Pembagian Tugas:
-| Nama | NIM | Mengerjakan: |
-|:----------|:-----------:|:-----------|
-| Aulia Permata Kumala | 235150701111001 | Login dan Register |
-| Farhah Mutiara Arifa | 235150700111002 | Profile |
-| Verda Aulia Setri | 235150701111014 | Detail Film |
-| Lovely Ito Panjaitan | 235150700111012 | Lokasi Bioskop dan Detail |
-| Lidwina Eleonora Dora | 235150707111019 | Homepage |
-
-***
-
 ### ✨ Fitur
 #### 🔐 Login dan Register:
 - 🔑 Login: Masukkan username dan password, lalu tekan "Login".

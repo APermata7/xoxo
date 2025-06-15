@@ -16,7 +16,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.xoxo.databinding.ItemFilmBinding;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder> {
     private List<Film> filmList;
@@ -90,16 +92,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FilmViewHolder
 
             binding.filmTitle.setText(film.getTitle());
             binding.filmBioskop.setText(film.getBioskop());
-            binding.filmHarga.setText(film.getHarga());
+            try {
+                // Bersihkan string dari karakter non-numerik
+                String cleanHarga = film.getHarga().replaceAll("[^\\d]", "");
+                double harga = Double.parseDouble(cleanHarga);
 
-            binding.switch1.setText(isFavoriteList ? "Remove" : "Favorite");
-            binding.switch1.setOnCheckedChangeListener(null);
-            binding.switch1.setChecked(film.isFavorite());
-            binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (favoriteListener != null) {
-                    favoriteListener.onFavoriteChanged(film, isChecked);
-                }
-            });
+                // Buat format Rupiah
+                Locale localeID = new Locale("in", "ID");
+                NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+                formatRupiah.setMaximumFractionDigits(0); // Tanpa desimal
+
+                String formattedHarga = formatRupiah.format(harga)
+                        .replace(",", ".");    // Ganti koma dengan titik
+
+                binding.filmHarga.setText(formattedHarga);
+            } catch (Exception e) {
+                // Jika parsing gagal, tampilkan harga asli
+                binding.filmHarga.setText(film.getHarga());
+            }
 
             itemView.setOnClickListener(v -> {
                 if (filmClickListener != null) {
