@@ -167,7 +167,6 @@
                 android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:text="Download Tiket"
-                android:drawableStart="@drawable/ic_download"
                 android:drawablePadding="8dp"
                 android:paddingVertical="12dp"
                 android:elevation="4dp"
