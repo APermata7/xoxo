@@ -12,46 +12,46 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="70dp"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="18dp">
+                android:paddingVertical="18dp">
 
                 <ImageView
                     android:id="@+id/btnBack"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
+                    android:src="@drawable/ic_back"
                     android:clickable="true"
                     android:focusable="true"
-                    android:src="@drawable/ic_back"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/tvDetail"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvDetail" />
 
                 <TextView
                     android:id="@+id/tvDetail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="15dp"
                     android:text="Detail Film"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    app:layout_constraintStart_toEndOf="@id/btnBack"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btnBack"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                    android:layout_marginStart="16dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -59,15 +59,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="JUDUL FILM"
-                android:maxLines="3"
                 android:textColor="@color/white"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:fontFamily="sans-serif-black"
                 android:gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"/>
+                android:layout_marginTop="24dp" />
 
             <ImageView
                 android:id="@+id/imagePoster"
@@ -79,10 +76,9 @@
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-                android:background="@drawable/placeholder_movie"
+                android:background="@drawable/rounder_corners"
                 android:contentDescription="Movie poster"
                 app:srcCompat="@drawable/placeholder_movie" />
-
 
             <TextView
                 android:id="@+id/textHarga"
@@ -92,28 +88,39 @@
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 android:gravity="center"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="12dp" />
 
             <TextView
                 android:id="@+id/textInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Genre | Tahun Rilis | Durasi"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:id="@+id/textDeskripsi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:textColor="@android:color/white"
                 android:textSize="13sp"
-                android:text="Lorem ipsum dolor sit amet..."/>
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:layout_marginTop="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_transculent_box"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:id="@+id/textDeskripsi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem ipsum dolor sit amet..."
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textPemain"
@@ -121,9 +128,10 @@
                 android:layout_height="wrap_content"
                 android:text="Pemain:"
                 android:textColor="@android:color/white"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="14sp"
+                android:paddingTop="8dp" />
 
             <TextView
                 android:id="@+id/textSutradara"
@@ -131,17 +139,18 @@
                 android:layout_height="wrap_content"
                 android:text="Sutradara:"
                 android:textColor="@android:color/white"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="14sp"
+                android:paddingTop="4dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:padding="16dp"
-                android:layout_marginTop="8dp">
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp">
 
                 <ImageButton
                     android:id="@+id/btnFav"
@@ -151,7 +160,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Favorite"
                     android:layout_marginHorizontal="8dp"
-                    android:scaleType="centerInside"/>
+                    android:scaleType="centerInside" />
 
                 <ImageButton
                     android:id="@+id/btnShare"
@@ -161,7 +170,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Share"
                     android:layout_marginHorizontal="8dp"
-                    android:scaleType="centerInside"/>
+                    android:scaleType="centerInside" />
             </LinearLayout>
 
             <Button
@@ -170,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="70dp"
+                android:layout_marginBottom="32dp"
                 android:backgroundTint="@color/secondary"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
@@ -178,9 +187,8 @@
                 android:drawablePadding="8dp"
                 android:paddingVertical="12dp"
                 android:elevation="4dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
+                android:fontFamily="sans-serif-medium"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
