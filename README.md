@@ -11,13 +11,13 @@ Aplikasi ini dirancang untuk membantu para pecinta film dalam merencanakan penga
 ***
 
 ## Kelompok 1
-| Nama | NIM |
-|:----------|:-----------:|
-| Aulia Permata Kumala | 235150701111001 | 
-| Farhah Mutiara Arifa | 235150700111002 | 
-| Verda Aulia Setri | 235150701111014 | 
-| Lovely Ito Panjaitan | 235150700111012 | 
-| Lidwina Eleonora Dora | 235150707111019 | 
+| Nama                     | NIM               | Tugas                                                                                     |
+|:-------------------------|:-----------------:|:-------------------------------------------------------------------------------------------|
+| Aulia Permata Kumala      | 235150701111001   | Login, Register, Download Tiket, Profile (Film Favorit Saya & Bioskop Star Saya), Logout   |
+| Farhah Mutiara Arifa      | 235150700111002   | Profile serta Pengaturan (Tentang Kami dan Hubungi Kami)                                    |
+| Verda Aulia Setri         | 235150701111014   | Detail Film, Favorit dan Share Film                                                         |
+| Lovely Ito Panjaitan      | 235150700111012   | CRUD Bioskop dan Bioskop Favorit                                                            |
+| Lidwina Eleonora Dora     | 235150707111019   | Sign in With Google, Register, Homepage, CRUD Film, Profile (Edit Username)                 |
 
 ***
 
