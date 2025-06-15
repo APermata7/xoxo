@@ -24,20 +24,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:layout_marginTop="17dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/AkunSaya"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:text="Akun Saya"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:layout_marginLeft="20dp" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <ImageView
