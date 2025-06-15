@@ -82,11 +82,19 @@ public class DetailActivity extends AppCompatActivity {
         binding.textSutradara.setText("Sutradara: " + currentFilm.getSutradara());
 
         try {
-            double price = Double.parseDouble(currentFilm.getHarga());
-            NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
-            binding.textHarga.setText(format.format(price));
-        } catch (NumberFormatException e) {
-            binding.textHarga.setText("Rp " + currentFilm.getHarga());
+            String cleanHarga = currentFilm.getHarga().replaceAll("[^\\d]", "");
+            double harga = Double.parseDouble(cleanHarga);
+
+            Locale localeID = new Locale("in", "ID");
+            NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+            formatRupiah.setMaximumFractionDigits(0);
+
+            String formattedHarga = formatRupiah.format(harga)
+                    .replace(",", ".");
+
+            binding.textHarga.setText(formattedHarga);
+        } catch (Exception e) {
+            binding.textHarga.setText(currentFilm.getHarga());
         }
     }
 
