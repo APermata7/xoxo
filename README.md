@@ -1,6 +1,8 @@
 # 🎬 XOXO - List Film & Bioskop
 Helping movie lovers explore films and cinemas with ease
 
+![Image](https://github.com/user-attachments/assets/c6188038-3a9c-4d3b-b849-79343ed81007)
+
 ***
 
 ### 📌 Tentang Aplikasi 
