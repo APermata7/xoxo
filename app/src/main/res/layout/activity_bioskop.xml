@@ -12,10 +12,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="20dp"
         android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white"
-        app:title="Cinemas" />
+        app:title="Cinemas"
+        app:titleTextColor="@color/white" />
 
     <ScrollView
         android:id="@+id/bioskp_scrollView"

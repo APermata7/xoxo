@@ -28,25 +28,29 @@
                     android:id="@+id/btnBack"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/ic_back"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvDetail"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvDetail"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvDetail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Detail Film"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Detail Film"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btnBack"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -55,11 +59,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="JUDUL FILM"
+                android:maxLines="3"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:gravity="center"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"/>
 
             <ImageView
                 android:id="@+id/imagePoster"

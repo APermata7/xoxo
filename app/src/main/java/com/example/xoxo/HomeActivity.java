@@ -56,7 +56,10 @@ public class HomeActivity extends AppCompatActivity implements
                 LinearLayoutManager.HORIZONTAL, false);
         rvFilm.setLayoutManager(filmLayoutManager);
 
-        rvFavorite.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager favoriteLayoutManager = new LinearLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL, false
+        );
+        rvFavorite.setLayoutManager(favoriteLayoutManager);
     }
 
     private void setupClickListeners() {
@@ -84,7 +87,7 @@ public class HomeActivity extends AppCompatActivity implements
                         if (document != null && document.exists()) {
                             String username = document.getString("username");
                             if (username != null) {
-                                String welcomeMessage = "Welcome, " + username + "!";
+                                String welcomeMessage = "Welcome, " + username + "!\uD83D\uDC4B";
                                 ((TextView) findViewById(R.id.tvUsername)).setText(welcomeMessage);
                             }
                         }
